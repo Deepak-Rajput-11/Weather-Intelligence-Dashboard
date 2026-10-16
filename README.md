@@ -15,8 +15,9 @@ The primary focus is Python backend development, REST APIs, HTTP communication, 
 - **Programming Language:** Python
 - **Backend Framework:** FastAPI
 - **ASGI Server:** Uvicorn
+- **HTTP Client:** HTTPX
+- **Weather API:** Open-Meteo
 - **Frontend (Planned):** HTML, CSS, JavaScript
-- **Weather API (Planned):** Open-Meteo
 - **Version Control:** Git and GitHub
 
 ## ✨ Features
@@ -27,12 +28,14 @@ The primary focus is Python backend development, REST APIs, HTTP communication, 
 - Created a home endpoint (`GET /`).
 - Implemented a basic health-check endpoint (`GET /health`).
 - Automatic interactive API documentation using FastAPI.
+- Integrated the Open-Meteo API to retrieve current weather information.
+- Created a weather endpoint (`GET /weather`) for Delhi.
+- Retrieved temperature, humidity, and wind speed from an external API.
 
 ### Planned Features
 
 - Search weather information by city.
-- Retrieve current weather data using an external API.
-- Display temperature, humidity, wind speed, and weather conditions.
+- Display descriptive weather conditions.
 - Show upcoming weather forecasts.
 - Visualize weather information using charts.
 - Handle invalid locations and external API errors.
@@ -63,7 +66,7 @@ python -m venv .venv
 ### 4. Install Dependencies
 
 ```bash
-python -m pip install "fastapi[standard]"
+python -m pip install -r requirements.txt
 ```
 
 ### 5. Start the Development Server
@@ -78,10 +81,11 @@ The backend will run locally at:
 
 ## 🔗 API Endpoints
 
-| Method | Endpoint  | Description                               |
-| ------ | --------- | ----------------------------------------- |
-| GET    | `/`       | Returns a welcome message                 |
-| GET    | `/health` | Returns a basic application health status |
+| Method | Endpoint   | Description                                   |
+| ------ | ---------- | --------------------------------------------- |
+| GET    | `/`        | Returns a welcome message                     |
+| GET    | `/health`  | Returns a basic application health status     |
+| GET    | `/weather` | Returns current weather information for Delhi |
 
 FastAPI's interactive API documentation is available at:
 
@@ -133,3 +137,26 @@ FastAPI's interactive API documentation is available at:
 - Implemented the `/health` API endpoint.
 - Tested both API endpoints using a browser.
 - Created the project README documentation.
+
+---
+
+### Day 2 — October 16, 2026 | External Weather API Integration
+
+**Concepts Learned:**
+
+- Understanding external APIs and HTTP requests using HTTPX.
+- Sending GET requests with query parameters.
+- Understanding API responses and extracting nested JSON data.
+- Integrating external APIs into FastAPI endpoints.
+- Understanding request timeouts and HTTP error checking.
+- Managing Python project dependencies using `requirements.txt`.
+
+**Work Completed:**
+
+- Installed HTTPX for external API communication.
+- Created `weather_test.py` to test Open-Meteo API requests.
+- Successfully retrieved real weather information for Delhi.
+- Extracted temperature, humidity, and wind speed from the API response.
+- Implemented the `GET /weather` endpoint in FastAPI.
+- Tested the endpoint successfully in the browser.
+- Created `requirements.txt` to document project dependencies.
