@@ -31,14 +31,16 @@ The primary focus is Python backend development, REST APIs, HTTP communication, 
 - Integrated the Open-Meteo API to retrieve current weather information.
 - Created a weather endpoint (`GET /weather`) for Delhi.
 - Retrieved temperature, humidity, and wind speed from an external API.
+- Implemented dynamic weather search using city names.
+- Integrated Open-Meteo's Geocoding API to convert city names into coordinates.
+- Added HTTP 404 error handling for cities that cannot be found.
 
 ### Planned Features
 
-- Search weather information by city.
 - Display descriptive weather conditions.
 - Show upcoming weather forecasts.
 - Visualize weather information using charts.
-- Handle invalid locations and external API errors.
+- Handle external API failures and network errors.
 - Develop a responsive web interface.
 - Add automated testing and deploy the application.
 
@@ -81,11 +83,11 @@ The backend will run locally at:
 
 ## 🔗 API Endpoints
 
-| Method | Endpoint   | Description                                   |
-| ------ | ---------- | --------------------------------------------- |
-| GET    | `/`        | Returns a welcome message                     |
-| GET    | `/health`  | Returns a basic application health status     |
-| GET    | `/weather` | Returns current weather information for Delhi |
+| Method | Endpoint               | Description                                                |
+| ------ | ---------------------- | ---------------------------------------------------------- |
+| GET    | `/`                    | Returns a welcome message                                  |
+| GET    | `/health`              | Returns a basic application health status                  |
+| GET    | `/weather?city=London` | Returns current weather information for the requested city |
 
 FastAPI's interactive API documentation is available at:
 
@@ -160,3 +162,23 @@ FastAPI's interactive API documentation is available at:
 - Implemented the `GET /weather` endpoint in FastAPI.
 - Tested the endpoint successfully in the browser.
 - Created `requirements.txt` to document project dependencies.
+
+### Day 3 — October 17, 2026 | Dynamic Weather Search and Geocoding
+
+**Concepts Learned:**
+
+- Understanding query parameters in FastAPI.
+- Introduction to geocoding and geographical coordinates.
+- Using multiple external APIs within a single backend endpoint.
+- Extracting location information from nested JSON responses.
+- Understanding HTTP exceptions and handling invalid city names.
+
+**Work Completed:**
+
+- Modified the `/weather` endpoint to accept city names dynamically.
+- Created `geocoding_test.py` to experiment with Open-Meteo's Geocoding API.
+- Successfully retrieved latitude and longitude using city names.
+- Integrated the Geocoding API with the Weather Forecast API.
+- Removed hardcoded Delhi coordinates from the weather endpoint.
+- Tested weather retrieval for multiple cities.
+- Implemented and tested HTTP 404 responses for invalid locations.
