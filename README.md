@@ -34,13 +34,14 @@ The primary focus is Python backend development, REST APIs, HTTP communication, 
 - Implemented dynamic weather search using city names.
 - Integrated Open-Meteo's Geocoding API to convert city names into coordinates.
 - Added HTTP 404 error handling for cities that cannot be found.
+- Added human-readable weather descriptions using WMO weather codes.
+- Implemented reusable HTTP request handling for external APIs.
+- Added error handling for network failures, request timeouts, and external API HTTP errors.
 
 ### Planned Features
 
-- Display descriptive weather conditions.
 - Show upcoming weather forecasts.
 - Visualize weather information using charts.
-- Handle external API failures and network errors.
 - Develop a responsive web interface.
 - Add automated testing and deploy the application.
 
@@ -182,3 +183,26 @@ FastAPI's interactive API documentation is available at:
 - Removed hardcoded Delhi coordinates from the weather endpoint.
 - Tested weather retrieval for multiple cities.
 - Implemented and tested HTTP 404 responses for invalid locations.
+
+---
+
+### Day 4 — October 18, 2026 | Weather Descriptions and API Error Handling
+
+**Concepts Learned:**
+
+- Understanding weather condition codes and their descriptions.
+- Mapping numeric codes to readable text using Python dictionaries.
+- Using dictionary `.get()` with a default value.
+- Handling HTTP request failures using `try` and `except`.
+- Understanding HTTP 502 and 503 status codes.
+- Creating reusable functions to reduce duplicate code.
+
+**Work Completed:**
+
+- Added `weather_code` to the Open-Meteo weather request.
+- Created `get_weather_description()` to convert weather codes into readable descriptions.
+- Added `weather_description` to the `/weather` API response.
+- Created a reusable `fetch_api_data()` function for external API requests.
+- Implemented error handling for connection failures, timeouts, and external API errors.
+- Refactored geocoding and weather requests to use the shared helper function.
+- Successfully tested weather retrieval and invalid-city handling.
