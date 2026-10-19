@@ -99,3 +99,56 @@ def get_weather(city: str):
         "weather_code": current_weather["weather_code"],
         "weather_description": get_weather_description(current_weather["weather_code"]),
     }
+
+
+@app.get("/forecast")
+def get_forecast(city: str):
+
+    # Step 1: Find the city's coordinates
+    geo_url = "https://geocoding-api.open-meteo.com/v1/search"
+
+    geo_params = {"name": city, "count": 1, "language": "en", "format": "json"}
+
+    geo_data = fetch_api_data(geo_url, geo_params)
+
+    if not geo_data.get("results"):
+        raise HTTPException(status_code=404, detail="City not found")
+
+    location = geo_data["results"][0]
+
+    latitude = location["latitude"]
+    longitude = location["longitude"]
+
+    # Step 2: Retrieve the 5-day forecast
+    forecast_url = "https://api.open-meteo.com/v1/forecast"
+
+    forecast_params = {
+        "latitude": latitude,
+        "longitude": longitude,
+        "daily": "temperature_2m_max,temperature_2m_min",
+        "forecast_days": 5,
+        "timezone": "auto",
+    }
+
+    forecast_data = fetch_api_data(forecast_url, forecast_params)
+
+    daily = forecast_data["daily"]
+
+    # Step 3: Organize the forecast data
+    forecast = []
+
+    for i in range(len(daily["time"])):
+        day = {
+            "date": daily["time"][i],
+            "max_temperature": daily["temperature_2m_max"][i],
+            "min_temperature": daily["temperature_2m_min"][i],
+        }
+
+        forecast.append(day)
+
+    # Step 4: Return the result
+    return {
+        "city": location["name"],
+        "country": location["country"],
+        "forecast": forecast,
+    }
