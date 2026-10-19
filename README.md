@@ -37,10 +37,13 @@ The primary focus is Python backend development, REST APIs, HTTP communication, 
 - Added human-readable weather descriptions using WMO weather codes.
 - Implemented reusable HTTP request handling for external APIs.
 - Added error handling for network failures, request timeouts, and external API HTTP errors.
+- Implemented a 5-day weather forecast endpoint (`GET /forecast`).
+- Retrieved daily maximum and minimum temperatures using Open-Meteo.
+- Organized forecast data into individual daily records.
+- Added city-based forecast searching and invalid-city handling.
 
 ### Planned Features
 
-- Show upcoming weather forecasts.
 - Visualize weather information using charts.
 - Develop a responsive web interface.
 - Add automated testing and deploy the application.
@@ -84,11 +87,12 @@ The backend will run locally at:
 
 ## 🔗 API Endpoints
 
-| Method | Endpoint               | Description                                                |
-| ------ | ---------------------- | ---------------------------------------------------------- |
-| GET    | `/`                    | Returns a welcome message                                  |
-| GET    | `/health`              | Returns a basic application health status                  |
-| GET    | `/weather?city=London` | Returns current weather information for the requested city |
+| Method | Endpoint                | Description                                                |
+| ------ | ----------------------- | ---------------------------------------------------------- |
+| GET    | `/`                     | Returns a welcome message                                  |
+| GET    | `/health`               | Returns a basic application health status                  |
+| GET    | `/weather?city=London`  | Returns current weather information for the requested city |
+| GET    | `/forecast?city=London` | Returns a 5-day weather forecast for the requested city    |
 
 FastAPI's interactive API documentation is available at:
 
@@ -206,3 +210,27 @@ FastAPI's interactive API documentation is available at:
 - Implemented error handling for connection failures, timeouts, and external API errors.
 - Refactored geocoding and weather requests to use the shared helper function.
 - Successfully tested weather retrieval and invalid-city handling.
+
+---
+
+### Day 5 — October 19, 2026 | Five-Day Weather Forecast Integration
+
+**Concepts Learned:**
+
+- Understanding daily weather forecasts and forecast API parameters.
+- Retrieving maximum and minimum temperatures using Open-Meteo.
+- Using `forecast_days` and automatic timezone selection.
+- Working with multiple related lists in JSON responses.
+- Converting forecast data into a list of dictionaries.
+- Reusing existing backend functions for new API endpoints.
+
+**Work Completed:**
+
+- Created `forecast_test.py` to experiment with Open-Meteo's daily forecast API.
+- Successfully retrieved five days of forecast information.
+- Organized forecast dates and temperatures into individual daily records.
+- Implemented the `GET /forecast` endpoint in FastAPI.
+- Integrated city geocoding with daily forecast retrieval.
+- Reused the existing `fetch_api_data()` helper function.
+- Successfully tested forecasts for London and Mumbai.
+- Verified HTTP 404 handling for invalid city names.
