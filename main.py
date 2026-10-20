@@ -125,7 +125,7 @@ def get_forecast(city: str):
     forecast_params = {
         "latitude": latitude,
         "longitude": longitude,
-        "daily": "temperature_2m_max,temperature_2m_min",
+        "daily": "temperature_2m_max,temperature_2m_min,weather_code",
         "forecast_days": 5,
         "timezone": "auto",
     }
@@ -142,6 +142,8 @@ def get_forecast(city: str):
             "date": daily["time"][i],
             "max_temperature": daily["temperature_2m_max"][i],
             "min_temperature": daily["temperature_2m_min"][i],
+            "weather_code": daily["weather_code"][i],
+            "weather_description": get_weather_description(daily["weather_code"][i]),
         }
 
         forecast.append(day)

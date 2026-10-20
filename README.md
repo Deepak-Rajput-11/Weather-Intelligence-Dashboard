@@ -41,6 +41,8 @@ The primary focus is Python backend development, REST APIs, HTTP communication, 
 - Retrieved daily maximum and minimum temperatures using Open-Meteo.
 - Organized forecast data into individual daily records.
 - Added city-based forecast searching and invalid-city handling.
+- Added daily weather codes to the five-day forecast response.
+- Added human-readable weather descriptions to each forecast day.
 
 ### Planned Features
 
@@ -87,12 +89,12 @@ The backend will run locally at:
 
 ## 🔗 API Endpoints
 
-| Method | Endpoint                | Description                                                |
-| ------ | ----------------------- | ---------------------------------------------------------- |
-| GET    | `/`                     | Returns a welcome message                                  |
-| GET    | `/health`               | Returns a basic application health status                  |
-| GET    | `/weather?city=London`  | Returns current weather information for the requested city |
-| GET    | `/forecast?city=London` | Returns a 5-day weather forecast for the requested city    |
+| Method | Endpoint                | Description                                                                        |
+| ------ | ----------------------- | ---------------------------------------------------------------------------------- |
+| GET    | `/`                     | Returns a welcome message                                                          |
+| GET    | `/health`               | Returns a basic application health status                                          |
+| GET    | `/weather?city=London`  | Returns current weather information for the requested city                         |
+| GET    | `/forecast?city=London` | Returns a 5-day forecast with daily high/low temperatures and weather descriptions |
 
 FastAPI's interactive API documentation is available at:
 
@@ -234,3 +236,30 @@ FastAPI's interactive API documentation is available at:
 - Reused the existing `fetch_api_data()` helper function.
 - Successfully tested forecasts for London and Mumbai.
 - Verified HTTP 404 handling for invalid city names.
+
+---
+
+### Day 6 — October 20, 2026 | Weather Conditions in Five-Day Forecast
+
+**Concepts Learned:**
+
+- Requesting additional daily weather variables from an external API.
+- Understanding weather codes returned for multiple forecast days.
+- Reusing an existing function to convert numerical codes into readable descriptions.
+- Accessing corresponding values from related lists using a loop index.
+- Debugging Python indentation and understanding how it affects loop execution.
+- Testing API responses for multiple valid cities and invalid city names.
+
+**Work Completed:**
+
+- Added `weather_code` to the daily forecast API request.
+- Added `weather_code` and `weather_description` to each daily forecast record.
+- Reused `get_weather_description()` to translate forecast codes into readable weather conditions.
+- Fixed a loop indentation issue that initially caused only one forecast day to be returned.
+- Tested the five-day forecast for London and Mumbai.
+- Verified that invalid city names return HTTP 404 with an appropriate error message.
+- Confirmed that each forecast day includes its date, maximum temperature, minimum temperature, weather code, and weather description.
+
+**Result:**
+
+The `/forecast` endpoint now returns five days of weather information with readable daily weather conditions for supported city searches.
