@@ -1,5 +1,5 @@
 import httpx
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 
 app = FastAPI()
 
@@ -60,7 +60,7 @@ def health_check():
 
 
 @app.get("/weather")
-def get_weather(city: str):
+def get_weather(city: str = Query(min_length=2, max_length=100)):
 
     # Step 1: Convert city name into coordinates
     geo_url = "https://geocoding-api.open-meteo.com/v1/search"
@@ -102,7 +102,7 @@ def get_weather(city: str):
 
 
 @app.get("/forecast")
-def get_forecast(city: str):
+def get_forecast(city: str = Query(min_length=2, max_length=100)):
 
     # Step 1: Find the city's coordinates
     geo_url = "https://geocoding-api.open-meteo.com/v1/search"

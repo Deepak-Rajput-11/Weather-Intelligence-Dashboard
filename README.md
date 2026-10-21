@@ -43,6 +43,9 @@ The primary focus is Python backend development, REST APIs, HTTP communication, 
 - Added city-based forecast searching and invalid-city handling.
 - Added daily weather codes to the five-day forecast response.
 - Added human-readable weather descriptions to each forecast day.
+- Added city input validation using FastAPI's Query parameters.
+- Enforced minimum and maximum city-name lengths for weather and forecast endpoints.
+- Tested valid and invalid city inputs.
 
 ### Planned Features
 
@@ -260,6 +263,20 @@ FastAPI's interactive API documentation is available at:
 - Verified that invalid city names return HTTP 404 with an appropriate error message.
 - Confirmed that each forecast day includes its date, maximum temperature, minimum temperature, weather code, and weather description.
 
-**Result:**
+### Day 7 — October 21, 2026 | City Input Validation
 
-The `/forecast` endpoint now returns five days of weather information with readable daily weather conditions for supported city searches.
+**Concepts Learned:**
+
+- Using FastAPI's `Query` to validate query parameters.
+- Setting minimum and maximum input lengths.
+- Understanding HTTP 422 validation errors.
+- Testing valid and invalid inputs.
+
+**Work Completed:**
+
+- Imported `Query` from FastAPI.
+- Added city-name length validation to the `/weather` endpoint.
+- Added city-name length validation to the `/forecast` endpoint.
+- Set a minimum length of 2 characters and a maximum length of 100 characters.
+- Tested short, empty, and valid city inputs.
+- Confirmed that both endpoints continue to work correctly.
