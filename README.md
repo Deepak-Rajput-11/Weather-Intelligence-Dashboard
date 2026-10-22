@@ -46,6 +46,9 @@ The primary focus is Python backend development, REST APIs, HTTP communication, 
 - Added city input validation using FastAPI's Query parameters.
 - Enforced minimum and maximum city-name lengths for weather and forecast endpoints.
 - Tested valid and invalid city inputs.
+- Refactored city geocoding into a reusable `get_city_location()` function.
+- Removed duplicated geocoding logic from the weather and forecast endpoints.
+- Tested both endpoints to confirm existing functionality remains intact.
 
 ### Planned Features
 
@@ -280,3 +283,21 @@ FastAPI's interactive API documentation is available at:
 - Set a minimum length of 2 characters and a maximum length of 100 characters.
 - Tested short, empty, and valid city inputs.
 - Confirmed that both endpoints continue to work correctly.
+
+### Day 8 — October 22, 2026 | Code Reuse and Geocoding Refactoring
+
+**Concepts Learned:**
+
+- Identifying duplicated code.
+- Creating reusable helper functions.
+- Refactoring code without changing endpoint behavior.
+- Returning and reusing location data across endpoints.
+
+**Work Completed:**
+
+- Created the `get_city_location()` helper function.
+- Centralized city geocoding and city-not-found error handling.
+- Updated `get_weather()` to use the shared function.
+- Updated `get_forecast()` to use the shared function.
+- Tested both endpoints with valid and invalid city names.
+- Confirmed that existing weather and forecast functionality continues to work.

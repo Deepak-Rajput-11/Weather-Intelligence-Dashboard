@@ -49,6 +49,24 @@ def fetch_api_data(url, params):
         )
 
 
+def get_city_location(city: str):
+    geo_url = "https://geocoding-api.open-meteo.com/v1/search"
+
+    geo_params = {
+        "name": city,
+        "count": 1,
+        "language": "en",
+        "format": "json",
+    }
+
+    geo_data = fetch_api_data(geo_url, geo_params)
+
+    if not geo_data.get("results"):
+        raise HTTPException(status_code=404, detail="City not found")
+
+    return geo_data["results"][0]
+
+
 @app.get("/")
 def home():
     return {"message": "Welcome to Weather Intelligence Dashboard"}
@@ -62,17 +80,8 @@ def health_check():
 @app.get("/weather")
 def get_weather(city: str = Query(min_length=2, max_length=100)):
 
-    # Step 1: Convert city name into coordinates
-    geo_url = "https://geocoding-api.open-meteo.com/v1/search"
-
-    geo_params = {"name": city, "count": 1, "language": "en", "format": "json"}
-
-    geo_data = fetch_api_data(geo_url, geo_params)
-
-    if not geo_data.get("results"):
-        raise HTTPException(status_code=404, detail="City not found")
-
-    location = geo_data["results"][0]
+    # Step 1: Find the city
+    location = get_city_location(city)
 
     latitude = location["latitude"]
     longitude = location["longitude"]
@@ -104,17 +113,8 @@ def get_weather(city: str = Query(min_length=2, max_length=100)):
 @app.get("/forecast")
 def get_forecast(city: str = Query(min_length=2, max_length=100)):
 
-    # Step 1: Find the city's coordinates
-    geo_url = "https://geocoding-api.open-meteo.com/v1/search"
-
-    geo_params = {"name": city, "count": 1, "language": "en", "format": "json"}
-
-    geo_data = fetch_api_data(geo_url, geo_params)
-
-    if not geo_data.get("results"):
-        raise HTTPException(status_code=404, detail="City not found")
-
-    location = geo_data["results"][0]
+    # Step 1: Find the city
+    location = get_city_location(city)
 
     latitude = location["latitude"]
     longitude = location["longitude"]
