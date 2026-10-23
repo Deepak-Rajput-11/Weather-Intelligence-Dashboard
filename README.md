@@ -49,6 +49,9 @@ The primary focus is Python backend development, REST APIs, HTTP communication, 
 - Refactored city geocoding into a reusable `get_city_location()` function.
 - Removed duplicated geocoding logic from the weather and forecast endpoints.
 - Tested both endpoints to confirm existing functionality remains intact.
+- Added type hints to helper functions and API endpoints.
+- Improved code readability by documenting expected input and return types.
+- Tested existing endpoints to verify that functionality remains intact.
 
 ### Planned Features
 
@@ -301,3 +304,21 @@ FastAPI's interactive API documentation is available at:
 - Updated `get_forecast()` to use the shared function.
 - Tested both endpoints with valid and invalid city names.
 - Confirmed that existing weather and forecast functionality continues to work.
+
+### Day 9 — October 23, 2026 | Type Hints and Code Readability
+
+**Concepts Learned:**
+
+- Understanding Python parameter type hints.
+- Using return type hints to communicate expected return values.
+- Applying type hints to helper functions and FastAPI endpoints.
+- Understanding that type hints do not automatically enforce types at runtime.
+
+**Work Completed:**
+
+- Added a return type hint to `get_city_location()`.
+- Added parameter and return type hints to `fetch_api_data()`.
+- Added parameter and return type hints to `get_weather_description()`.
+- Added return type hints to `get_weather()` and `get_forecast()`.
+- Tested current weather, five-day forecast, invalid city handling, and input validation.
+- Confirmed that all four tests passed.

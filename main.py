@@ -4,7 +4,7 @@ from fastapi import FastAPI, HTTPException, Query
 app = FastAPI()
 
 
-def get_weather_description(code):
+def get_weather_description(code: int) -> str:
     weather_codes = {
         0: "Clear sky",
         1: "Mainly clear",
@@ -32,7 +32,7 @@ def get_weather_description(code):
     return weather_codes.get(code, "Unknown weather condition")
 
 
-def fetch_api_data(url, params):
+def fetch_api_data(url: str, params: dict) -> dict:
     try:
         response = httpx.get(url, params=params, timeout=10.0)
         response.raise_for_status()
@@ -49,7 +49,7 @@ def fetch_api_data(url, params):
         )
 
 
-def get_city_location(city: str):
+def get_city_location(city: str) -> dict:
     geo_url = "https://geocoding-api.open-meteo.com/v1/search"
 
     geo_params = {
@@ -78,7 +78,7 @@ def health_check():
 
 
 @app.get("/weather")
-def get_weather(city: str = Query(min_length=2, max_length=100)):
+def get_weather(city: str = Query(min_length=2, max_length=100)) -> dict:
 
     # Step 1: Find the city
     location = get_city_location(city)
@@ -111,7 +111,7 @@ def get_weather(city: str = Query(min_length=2, max_length=100)):
 
 
 @app.get("/forecast")
-def get_forecast(city: str = Query(min_length=2, max_length=100)):
+def get_forecast(city: str = Query(min_length=2, max_length=100)) -> dict:
 
     # Step 1: Find the city
     location = get_city_location(city)
