@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather Intelligence Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Weather Intelligence Dashboard</h1>
+      <p>Understand the weather. Plan your day.</p>
+    </header>
+
+    <main>
+      <section>
+        <h2>Search Weather</h2>
+
+        <form id="search-form">
+          <input
+            type="text"
+            id="city-input"
+            placeholder="Enter a city name"
+            required
+          />
+          <button type="submit">Search</button>
+        </form>
+
+        <p id="status-message"></p>
+      </section>
+      <section id="current-weather">
+        <h2>Current Weather</h2>
+
+        <h3 id="location-name">Your city</h3>
+        <p id="current-description">Weather conditions will appear here.</p>
+
+        <p>
+          Temperature:
+          <span id="current-temperature">--</span> °C
+        </p>
+
+        <p>
+          Humidity:
+          <span id="current-humidity">--</span>%
+        </p>
+
+        <p>
+          Wind Speed:
+          <span id="current-wind">--</span> km/h
+        </p>
+      </section>
+
+      <section id="forecast-section">
+        <h2>Five-Day Forecast</h2>
+
+        <div id="forecast-list">
+          <p>Search for a city to see its forecast.</p>
+        </div>
+      </section>
+    </main>
+    <script src="/static/script.js"></script>
+  </body>
+</html>

@@ -1,7 +1,10 @@
 import httpx
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 def get_weather_description(code: int) -> str:
@@ -69,7 +72,7 @@ def get_city_location(city: str) -> dict:
 
 @app.get("/")
 def home():
-    return {"message": "Welcome to Weather Intelligence Dashboard"}
+    return FileResponse("static/index.html")
 
 
 @app.get("/health")

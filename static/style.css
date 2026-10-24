@@ -1,0 +1,76 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f1f5f9;
+  color: #1e293b;
+}
+
+body {
+  margin: 0;
+}
+
+header {
+  text-align: center;
+  padding: 30px 20px;
+}
+
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+section {
+  background-color: white;
+  padding: 24px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+}
+
+form {
+  display: flex;
+  gap: 10px;
+}
+
+input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+button {
+  padding: 12px 20px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #1d4ed8;
+}
+
+#forecast-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+}
+
+.forecast-day {
+  background-color: #f1f5f9;
+  padding: 16px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.forecast-day h3 {
+  font-size: 16px;
+  margin-top: 0;
+}
+
+.forecast-day p {
+  margin: 8px 0;
+}

@@ -1,14 +1,12 @@
 # 🌤️ Weather Intelligence Dashboard
 
-A Python-based weather dashboard developed using **FastAPI**, with a frontend planned using HTML, CSS, and JavaScript.
+A Python-based weather dashboard built with **FastAPI**, **HTML**, **CSS**, and **JavaScript**, using the Open-Meteo API to retrieve and display real-time weather information and a five-day forecast.
 
 ## 📌 About the Project
 
-Weather Intelligence Dashboard is a backend-focused web application currently under development.
+Weather Intelligence Dashboard is a web application that allows users to search for cities, view current weather conditions, and explore a five-day weather forecast through an interactive web interface.
 
-The application aims to allow users to search for cities, retrieve current weather information, view forecasts, and explore weather data through an interactive dashboard.
-
-The primary focus is Python backend development, REST APIs, HTTP communication, external API integration, and practical software engineering.
+The project focuses on Python backend development, REST APIs, external API integration, frontend-backend communication, input validation, error handling, and practical software engineering.
 
 ## 🛠️ Technologies Used
 
@@ -17,7 +15,7 @@ The primary focus is Python backend development, REST APIs, HTTP communication, 
 - **ASGI Server:** Uvicorn
 - **HTTP Client:** HTTPX
 - **Weather API:** Open-Meteo
-- **Frontend (Planned):** HTML, CSS, JavaScript
+- **Frontend:** HTML, CSS, JavaScript
 - **Version Control:** Git and GitHub
 
 ## ✨ Features
@@ -52,12 +50,21 @@ The primary focus is Python backend development, REST APIs, HTTP communication, 
 - Added type hints to helper functions and API endpoints.
 - Improved code readability by documenting expected input and return types.
 - Tested existing endpoints to verify that functionality remains intact.
+- Created the frontend using HTML, CSS, and JavaScript.
+- Configured FastAPI to serve the frontend homepage and static files.
+- Connected the frontend to the current-weather and forecast API endpoints using JavaScript Fetch.
+- Displayed current weather details dynamically on the webpage.
+- Rendered five-day forecast data as individual forecast elements.
+- Added CSS Grid styling for the forecast layout.
+- Added basic frontend error messaging for forecast request failures.
 
 ### Planned Features
 
 - Visualize weather information using charts.
-- Develop a responsive web interface.
-- Add automated testing and deploy the application.
+- Improve loading states and frontend error handling.
+- Complete application testing and validation.
+- Polish the user interface and improve accessibility.
+- Deploy the application.
 
 ## ⚙️ Installation and Setup
 
@@ -99,8 +106,8 @@ The backend will run locally at:
 ## 🔗 API Endpoints
 
 | Method | Endpoint                | Description                                                                        |
-| ------ | ----------------------- | ---------------------------------------------------------------------------------- |
-| GET    | `/`                     | Returns a welcome message                                                          |
+| ------ | ----------------------- | ---------------------------------------------------------------------------------- | --- |
+| GET    | `/`                     | Serves the Weather Intelligence Dashboard homepage                                 |     |
 | GET    | `/health`               | Returns a basic application health status                                          |
 | GET    | `/weather?city=London`  | Returns current weather information for the requested city                         |
 | GET    | `/forecast?city=London` | Returns a 5-day forecast with daily high/low temperatures and weather descriptions |
@@ -322,3 +329,31 @@ FastAPI's interactive API documentation is available at:
 - Added return type hints to `get_weather()` and `get_forecast()`.
 - Tested current weather, five-day forecast, invalid city handling, and input validation.
 - Confirmed that all four tests passed.
+
+---
+
+### Day 10 — October 24, 2026 | Frontend Integration and Weather Dashboard
+
+**Concepts Learned:**
+
+- Serving HTML files using FastAPI's `FileResponse`.
+- Serving static assets using FastAPI's `StaticFiles`.
+- Connecting HTML forms to JavaScript event listeners.
+- Preventing default form submission using `event.preventDefault()`.
+- Fetching backend API data using JavaScript `fetch()`.
+- Handling JSON responses and HTTP errors.
+- Updating webpage content dynamically using the DOM.
+- Rendering forecast data using `forEach()` and dynamically created elements.
+- Applying CSS Grid to arrange forecast items.
+
+**Work Completed:**
+
+- Created the frontend HTML structure.
+- Added CSS styling for the dashboard.
+- Configured FastAPI to serve the homepage and static files.
+- Connected the city search form to the `/weather` and `/forecast` endpoints.
+- Displayed current weather information dynamically.
+- Rendered the five-day forecast on the webpage.
+- Added styling for individual forecast items.
+- Implemented basic error messaging for forecast request failures.
+- Tested the dashboard using a city search.
