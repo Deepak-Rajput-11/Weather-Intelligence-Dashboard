@@ -357,3 +357,26 @@ FastAPI's interactive API documentation is available at:
 - Added styling for individual forecast items.
 - Implemented basic error messaging for forecast request failures.
 - Tested the dashboard using a city search.
+
+### Day 11 — October 25, 2026 | Frontend Error Handling and Request Coordination
+
+**Concepts Learned:**
+
+- Coordinating multiple asynchronous requests using `Promise.all()`.
+- Handling failed HTTP responses using `response.ok` and HTTP status codes.
+- Understanding the difference between HTTP errors and network errors.
+- Displaying loading, success, and error states in a frontend.
+- Clearing stale data when a new search begins.
+- Using JavaScript's `Error` objects and `.catch()` for error handling.
+
+**Work Completed:**
+
+- Coordinated current-weather and five-day forecast requests using `Promise.all()`.
+- Added a loading message while weather data is being retrieved.
+- Updated the dashboard after both requests succeed.
+- Added user-friendly error messages for invalid cities and weather-service failures.
+- Preserved HTTP status codes in frontend errors.
+- Cleared previous weather and forecast results before starting a new search.
+- Tested valid city searches and invalid city handling successfully.
+
+---

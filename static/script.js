@@ -9,66 +9,88 @@ const searchForm = document.getElementById("search-form");
 searchForm.addEventListener("submit", function (event) {
   event.preventDefault();
 
-  const city = cityInput.value;
+  const statusMessage = document.getElementById("status-message");
+  statusMessage.textContent = "Loading weather...";
 
-  fetch(`/weather?city=${encodeURIComponent(city)}`)
-    .then(function (response) {
-      if (!response.ok) {
-        throw new Error("Could not fetch weather");
-      }
+  // Clear the previous search results
+  document.getElementById("location-name").textContent = "";
+  document.getElementById("current-description").textContent = "";
+  document.getElementById("current-temperature").textContent = "";
+  document.getElementById("current-humidity").textContent = "";
+  document.getElementById("current-wind").textContent = "";
+  document.getElementById("forecast-list").innerHTML = "";
 
-      return response.json();
-    })
-    .then(function (data) {
+  const city = cityInput.value.trim();
+
+  Promise.all([
+    fetch(`/weather?city=${encodeURIComponent(city)}`).then(
+      function (response) {
+        if (!response.ok) {
+          throw new Error(`Weather request failed: ${response.status}`);
+        }
+        return response.json();
+      },
+    ),
+
+    fetch(`/forecast?city=${encodeURIComponent(city)}`).then(
+      function (response) {
+        if (!response.ok) {
+          throw new Error(`Forecast request failed: ${response.status}`);
+        }
+        return response.json();
+      },
+    ),
+  ])
+    .then(function ([weatherData, forecastData]) {
       document.getElementById("location-name").textContent =
-        `${data.city}, ${data.country}`;
+        `${weatherData.city}, ${weatherData.country}`;
 
       document.getElementById("current-description").textContent =
-        data.weather_description;
+        weatherData.weather_description;
 
       document.getElementById("current-temperature").textContent =
-        data.temperature;
+        weatherData.temperature;
 
-      document.getElementById("current-humidity").textContent = data.humidity;
+      document.getElementById("current-humidity").textContent =
+        weatherData.humidity;
 
-      document.getElementById("current-wind").textContent = data.wind_speed;
-    })
-    .catch(function (error) {
-      console.log(error.message);
-    });
+      document.getElementById("current-wind").textContent =
+        weatherData.wind_speed;
 
-  fetch(`/forecast?city=${encodeURIComponent(city)}`)
-    .then(function (response) {
-      if (!response.ok) {
-        throw new Error("Could not fetch forecast");
-      }
-
-      return response.json();
-    })
-    .then(function (data) {
       const forecastList = document.getElementById("forecast-list");
-
       forecastList.innerHTML = "";
 
-      data.forecast.forEach(function (day) {
+      forecastData.forecast.forEach(function (day) {
         const dayElement = document.createElement("div");
         dayElement.className = "forecast-day";
 
         dayElement.innerHTML = `
-            <h3>${day.date}</h3>
-            <p>${day.weather_description}</p>
-            <p>High: ${day.max_temperature}°C</p>
-            <p>Low: ${day.min_temperature}°C</p>
+          <h3>${day.date}</h3>
+          <p>${day.weather_description}</p>
+          <p>High: ${day.max_temperature}°C</p>
+          <p>Low: ${day.min_temperature}°C</p>
         `;
 
         forecastList.appendChild(dayElement);
       });
+
+      statusMessage.textContent = "";
     })
-
     .catch(function (error) {
-      console.error("Forecast error:", error.message);
+      console.error("Weather dashboard error:", error.message);
 
-      document.getElementById("status-message").textContent =
-        "Unable to fetch the forecast. Please try again.";
+      if (error.message.includes("404")) {
+        statusMessage.textContent =
+          "City not found. Please enter a valid city name.";
+      } else if (
+        error.message.includes("502") ||
+        error.message.includes("503")
+      ) {
+        statusMessage.textContent =
+          "Weather service is temporarily unavailable. Please try again later.";
+      } else {
+        statusMessage.textContent =
+          "Unable to connect. Please check your internet connection and try again.";
+      }
     });
 });
