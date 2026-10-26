@@ -4,6 +4,7 @@ const cityInput = document.getElementById("city-input");
 
 console.log(cityInput);
 
+let searchId = 0;
 const searchForm = document.getElementById("search-form");
 
 searchForm.addEventListener("submit", function (event) {
@@ -21,6 +22,13 @@ searchForm.addEventListener("submit", function (event) {
   document.getElementById("forecast-list").innerHTML = "";
 
   const city = cityInput.value.trim();
+
+  if (!city) {
+    statusMessage.textContent = "Please enter a city name.";
+    return;
+  }
+
+  const currentSearchId = ++searchId;
 
   Promise.all([
     fetch(`/weather?city=${encodeURIComponent(city)}`).then(
@@ -42,6 +50,9 @@ searchForm.addEventListener("submit", function (event) {
     ),
   ])
     .then(function ([weatherData, forecastData]) {
+      if (currentSearchId !== searchId) {
+        return;
+      }
       document.getElementById("location-name").textContent =
         `${weatherData.city}, ${weatherData.country}`;
 
@@ -78,6 +89,10 @@ searchForm.addEventListener("submit", function (event) {
     })
     .catch(function (error) {
       console.error("Weather dashboard error:", error.message);
+
+      if (currentSearchId !== searchId) {
+        return;
+      }
 
       if (error.message.includes("404")) {
         statusMessage.textContent =

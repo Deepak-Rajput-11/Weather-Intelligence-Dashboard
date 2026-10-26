@@ -380,3 +380,23 @@ FastAPI's interactive API documentation is available at:
 - Tested valid city searches and invalid city handling successfully.
 
 ---
+
+### Day 12 — October 26, 2026 | Input Validation and Asynchronous Request Handling
+
+**Concepts Learned:**
+
+- Validating user input with JavaScript's `.trim()`.
+- Tracking searches using incrementing request IDs.
+- Understanding race conditions in asynchronous JavaScript.
+- Using `Promise.all()` to coordinate multiple API requests.
+- Preventing stale success and error callbacks from updating the interface.
+
+**Work Completed:**
+
+- Added validation to prevent empty and whitespace-only city searches.
+- Assigned an incrementing ID to each valid search.
+- Prevented outdated successful requests from overwriting the latest search results.
+- Prevented outdated failed requests from replacing the latest search's status message.
+- Tested rapid searches, invalid city requests, and responses completing in different orders.
+
+---
