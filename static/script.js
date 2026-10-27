@@ -1,11 +1,31 @@
-console.log("JavaScript is working!");
+function getWeatherIcon(code) {
+  if (code === 0) {
+    return "☀️";
+  } else if (code === 1 || code === 2) {
+    return "🌤️";
+  } else if (code === 3) {
+    return "☁️";
+  } else if (code === 45 || code === 48) {
+    return "🌫️";
+  } else if (code >= 51 && code <= 67) {
+    return "🌧️";
+  } else if (code >= 71 && code <= 77) {
+    return "❄️";
+  } else if (code >= 80 && code <= 82) {
+    return "🌦️";
+  } else if (code === 85 || code === 86) {
+    return "🌨️";
+  } else if (code >= 95 && code <= 99) {
+    return "⛈️";
+  }
+
+  return "🌡️";
+}
 
 const cityInput = document.getElementById("city-input");
-
-console.log(cityInput);
+const searchForm = document.getElementById("search-form");
 
 let searchId = 0;
-const searchForm = document.getElementById("search-form");
 
 searchForm.addEventListener("submit", function (event) {
   event.preventDefault();
@@ -13,7 +33,7 @@ searchForm.addEventListener("submit", function (event) {
   const statusMessage = document.getElementById("status-message");
   statusMessage.textContent = "Loading weather...";
 
-  // Clear the previous search results
+  // Clear the previous search results.
   document.getElementById("location-name").textContent = "";
   document.getElementById("current-description").textContent = "";
   document.getElementById("current-temperature").textContent = "";
@@ -36,6 +56,7 @@ searchForm.addEventListener("submit", function (event) {
         if (!response.ok) {
           throw new Error(`Weather request failed: ${response.status}`);
         }
+
         return response.json();
       },
     ),
@@ -45,6 +66,7 @@ searchForm.addEventListener("submit", function (event) {
         if (!response.ok) {
           throw new Error(`Forecast request failed: ${response.status}`);
         }
+
         return response.json();
       },
     ),
@@ -53,11 +75,12 @@ searchForm.addEventListener("submit", function (event) {
       if (currentSearchId !== searchId) {
         return;
       }
+
       document.getElementById("location-name").textContent =
         `${weatherData.city}, ${weatherData.country}`;
 
       document.getElementById("current-description").textContent =
-        weatherData.weather_description;
+        `${getWeatherIcon(weatherData.weather_code)} ${weatherData.weather_description}`;
 
       document.getElementById("current-temperature").textContent =
         weatherData.temperature;
@@ -75,9 +98,17 @@ searchForm.addEventListener("submit", function (event) {
         const dayElement = document.createElement("div");
         dayElement.className = "forecast-day";
 
+        const forecastDate = new Date(day.date + "T00:00:00");
+
+        const readableDate = forecastDate.toLocaleDateString("en-GB", {
+          weekday: "short",
+          month: "short",
+          day: "numeric",
+        });
+
         dayElement.innerHTML = `
-          <h3>${day.date}</h3>
-          <p>${day.weather_description}</p>
+          <h3>${readableDate}</h3>
+          <p>${getWeatherIcon(day.weather_code)} ${day.weather_description}</p>
           <p>High: ${day.max_temperature}°C</p>
           <p>Low: ${day.min_temperature}°C</p>
         `;

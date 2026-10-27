@@ -57,13 +57,18 @@ The project focuses on Python backend development, REST APIs, external API integ
 - Rendered five-day forecast data as individual forecast elements.
 - Added CSS Grid styling for the forecast layout.
 - Added basic frontend error messaging for forecast request failures.
+- Added weather icons to current weather conditions using weather codes.
+- Added weather icons to each day of the five-day forecast.
+- Formatted forecast dates into readable weekday, month, and day labels.
+- Added loading feedback and user-friendly error messages for weather searches.
+- Prevented outdated asynchronous requests from overwriting newer search results.
+- Tested multiple valid cities and invalid city searches.
 
 ### Planned Features
 
 - Visualize weather information using charts.
-- Improve loading states and frontend error handling.
-- Complete application testing and validation.
 - Polish the user interface and improve accessibility.
+- Complete broader application testing and validation.
 - Deploy the application.
 
 ## ⚙️ Installation and Setup
@@ -400,3 +405,29 @@ FastAPI's interactive API documentation is available at:
 - Tested rapid searches, invalid city requests, and responses completing in different orders.
 
 ---
+
+---
+
+### Day 13 — October 27, 2026 | Weather Icons, Forecast Dates, and Frontend Debugging
+
+**Concepts Learned:**
+
+- Mapping weather codes to icons using a reusable JavaScript function.
+- Formatting dates with JavaScript's `Date` and `toLocaleDateString()`.
+- Rendering forecast cards dynamically using `forEach()` and `createElement()`.
+- Understanding browser caching and cache busting with query parameters.
+- Debugging frontend JavaScript and cleaning up temporary console logs.
+- Testing valid searches, invalid inputs, and frontend error messages.
+
+**Work Completed:**
+
+- Added weather icons to current weather conditions.
+- Added weather icons to each day of the five-day forecast.
+- Formatted forecast dates to display the weekday, month, and day.
+- Investigated why updated JavaScript changes were not appearing in the browser.
+- Used the script URL query parameter `?v=2` to make the browser load the updated JavaScript resource.
+- Cleaned up temporary debugging statements and corrected forecast-template indentation.
+- Tested current weather and forecast rendering with multiple valid cities.
+- Tested invalid city handling and confirmed that the dashboard displays an appropriate error message.
+
+**Result:** The dashboard displays current weather and five-day forecast information with weather icons and readable dates. Valid searches, invalid city handling, and the updated frontend behavior were tested successfully.
