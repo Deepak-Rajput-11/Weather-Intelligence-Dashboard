@@ -74,3 +74,93 @@ button:hover {
 .forecast-day p {
   margin: 8px 0;
 }
+
+#temperature-chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  gap: 16px;
+  min-height: 240px;
+  padding: 20px 10px;
+  overflow-x: auto;
+}
+
+.temperature-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex: 1;
+  min-width: 70px;
+}
+
+.temperature-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 6px;
+  height: 160px;
+}
+
+.temperature-bar {
+  width: 20px;
+  min-height: 4px;
+  border-radius: 6px 6px 0 0;
+}
+
+.temperature-high {
+  background-color: #ef4444;
+}
+
+.temperature-low {
+  background-color: #3b82f6;
+}
+
+.temperature-day p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.temperature-legend {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 12px;
+}
+
+.temperature-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-color {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.legend-high {
+  background-color: #ef4444;
+}
+
+.legend-low {
+  background-color: #3b82f6;
+}
+.temperature-days {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  gap: 16px;
+  width: 100%;
+}
+
+#temperature-chart {
+  flex-wrap: wrap;
+}
+
+.temperature-legend {
+  width: 100%;
+}

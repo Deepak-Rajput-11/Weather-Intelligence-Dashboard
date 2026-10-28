@@ -431,3 +431,30 @@ FastAPI's interactive API documentation is available at:
 - Tested invalid city handling and confirmed that the dashboard displays an appropriate error message.
 
 **Result:** The dashboard displays current weather and five-day forecast information with weather icons and readable dates. Valid searches, invalid city handling, and the updated frontend behavior were tested successfully.
+
+### Day 14 — October 28, 2026 | Five-Day Temperature Chart and Data Visualization
+
+**Concepts Learned:**
+
+- Understanding data visualization using HTML, CSS, and JavaScript.
+- Representing daily maximum and minimum temperatures using bar heights.
+- Calculating relative bar heights using minimum, maximum, and temperature range.
+- Dynamically creating and updating HTML elements using JavaScript.
+- Using `Math.min()`, `Math.max()`, and the spread syntax to calculate temperature ranges.
+- Organizing chart elements using CSS Flexbox.
+- Handling chart loading and error states during asynchronous API requests.
+
+**Work Completed:**
+
+- Added a Five-Day Temperature Trend section to the dashboard.
+- Created a reusable `renderTemperatureChart()` function.
+- Displayed daily high and low temperatures using separate colored bars.
+- Calculated bar heights dynamically based on forecast temperatures.
+- Added readable date labels and a legend for high and low temperatures.
+- Styled the chart using CSS Flexbox.
+- Integrated the temperature chart with the existing five-day forecast API response.
+- Added chart-state handling for new searches and failed requests.
+- Fixed an issue where the loading message remained visible after an invalid city search.
+- Tested the chart with valid and invalid city searches.
+
+**Result:** The dashboard now displays a five-day temperature trend alongside current weather conditions and the five-day forecast. The chart updates with successful searches and resets appropriately when a search fails.

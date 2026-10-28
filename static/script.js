@@ -22,6 +22,65 @@ function getWeatherIcon(code) {
   return "🌡️";
 }
 
+function renderTemperatureChart(forecast) {
+  const chart = document.getElementById("temperature-chart");
+  chart.innerHTML = "";
+
+  const legend = document.createElement("div");
+  legend.className = "temperature-legend";
+  legend.innerHTML = `
+    <span><span class="legend-color legend-high"></span>High</span>
+    <span><span class="legend-color legend-low"></span>Low</span>
+  `;
+
+  const chartDays = document.createElement("div");
+  chartDays.className = "temperature-days";
+
+  const temperatures = forecast.flatMap(function (day) {
+    return [day.max_temperature, day.min_temperature];
+  });
+
+  const minTemperature = Math.min(...temperatures);
+  const maxTemperature = Math.max(...temperatures);
+  const temperatureRange = maxTemperature - minTemperature || 1;
+
+  forecast.forEach(function (day) {
+    const dayElement = document.createElement("div");
+    dayElement.className = "temperature-day";
+
+    const date = new Date(day.date + "T00:00:00");
+    const readableDate = date.toLocaleDateString("en-GB", {
+      weekday: "short",
+      day: "numeric",
+    });
+
+    const highHeight =
+      ((day.max_temperature - minTemperature) / temperatureRange) * 120 + 20;
+
+    const lowHeight =
+      ((day.min_temperature - minTemperature) / temperatureRange) * 120 + 20;
+
+    dayElement.innerHTML = `
+      <p>${day.max_temperature}°C</p>
+      <div class="temperature-bars">
+        <div class="temperature-bar temperature-high"
+             style="height: ${highHeight}px"
+             title="High: ${day.max_temperature}°C"></div>
+        <div class="temperature-bar temperature-low"
+             style="height: ${lowHeight}px"
+             title="Low: ${day.min_temperature}°C"></div>
+      </div>
+      <p>${day.min_temperature}°C</p>
+      <p>${readableDate}</p>
+    `;
+
+    chartDays.appendChild(dayElement);
+  });
+
+  chart.appendChild(chartDays);
+  chart.appendChild(legend);
+}
+
 const cityInput = document.getElementById("city-input");
 const searchForm = document.getElementById("search-form");
 
@@ -40,6 +99,8 @@ searchForm.addEventListener("submit", function (event) {
   document.getElementById("current-humidity").textContent = "";
   document.getElementById("current-wind").textContent = "";
   document.getElementById("forecast-list").innerHTML = "";
+  document.getElementById("temperature-chart").innerHTML =
+    "<p>Loading temperature trend...</p>";
 
   const city = cityInput.value.trim();
 
@@ -94,6 +155,7 @@ searchForm.addEventListener("submit", function (event) {
       const forecastList = document.getElementById("forecast-list");
       forecastList.innerHTML = "";
 
+      renderTemperatureChart(forecastData.forecast);
       forecastData.forecast.forEach(function (day) {
         const dayElement = document.createElement("div");
         dayElement.className = "forecast-day";
@@ -124,6 +186,9 @@ searchForm.addEventListener("submit", function (event) {
       if (currentSearchId !== searchId) {
         return;
       }
+
+      document.getElementById("temperature-chart").innerHTML =
+        "<p>Search for a city to see its temperature trend.</p>";
 
       if (error.message.includes("404")) {
         statusMessage.textContent =
