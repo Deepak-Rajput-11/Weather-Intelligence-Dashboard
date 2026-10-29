@@ -458,3 +458,24 @@ FastAPI's interactive API documentation is available at:
 - Tested the chart with valid and invalid city searches.
 
 **Result:** The dashboard now displays a five-day temperature trend alongside current weather conditions and the five-day forecast. The chart updates with successful searches and resets appropriately when a search fails.
+
+### Day 15 — October 29, 2026 | Weather API Retry Mechanism & Automated Testing
+
+**Concepts Learned:**
+
+- Retry mechanisms for handling temporary API failures.
+- Exception handling with `httpx.RequestError` and `httpx.HTTPStatusError`.
+- HTTP status codes and deciding when to retry a request.
+- Unit testing with `pytest`.
+- Mocking API responses using `unittest.mock`.
+
+**Work Completed:**
+
+- Updated `fetch_api_data()` to retry network and server-side failures up to three times.
+- Added a one-second delay between retry attempts.
+- Prevented retries for client-side HTTP errors.
+- Created `test_retry.py` with three automated tests covering server errors, network failures, and client errors.
+- Ran the complete test suite and verified that all three tests passed.
+
+**Result:**
+Implemented and tested a retry mechanism to make weather API requests more resilient to temporary failures. Added automated tests that verify retry behavior without making real external API calls.

@@ -1,4 +1,5 @@
 import httpx
+import time
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -35,21 +36,40 @@ def get_weather_description(code: int) -> str:
     return weather_codes.get(code, "Unknown weather condition")
 
 
+import time
+
+
 def fetch_api_data(url: str, params: dict) -> dict:
-    try:
-        response = httpx.get(url, params=params, timeout=10.0)
-        response.raise_for_status()
-        return response.json()
+    max_attempts = 3
 
-    except httpx.RequestError:
-        raise HTTPException(
-            status_code=503, detail="Weather service is temporarily unavailable"
-        )
+    for attempt in range(max_attempts):
+        try:
+            response = httpx.get(url, params=params, timeout=10.0)
+            response.raise_for_status()
+            return response.json()
 
-    except httpx.HTTPStatusError:
-        raise HTTPException(
-            status_code=502, detail="External weather API returned an error"
-        )
+        except httpx.RequestError:
+            if attempt == max_attempts - 1:
+                raise HTTPException(
+                    status_code=503,
+                    detail="Weather service is temporarily unavailable",
+                )
+
+        except httpx.HTTPStatusError as error:
+            if error.response.status_code < 500:
+                raise HTTPException(
+                    status_code=502,
+                    detail="External weather API returned an error",
+                )
+
+            if attempt == max_attempts - 1:
+                raise HTTPException(
+                    status_code=502,
+                    detail="External weather API returned an error",
+                )
+
+        if attempt < max_attempts - 1:
+            time.sleep(1)
 
 
 def get_city_location(city: str) -> dict:
