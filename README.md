@@ -479,3 +479,30 @@ FastAPI's interactive API documentation is available at:
 
 **Result:**
 Implemented and tested a retry mechanism to make weather API requests more resilient to temporary failures. Added automated tests that verify retry behavior without making real external API calls.
+
+### Day 16 — October 30, 2026 | API Response Validation and Automated Testing
+
+**Concepts Learned:**
+
+- Understanding why HTTP success does not guarantee valid API response data.
+- Validating required fields in external API responses.
+- Handling missing or incomplete JSON data using controlled HTTP exceptions.
+- Understanding how inconsistent list lengths can cause indexing errors.
+- Testing malformed API responses using mocked data.
+- Verifying backend error handling with automated pytest tests.
+
+**Work Completed:**
+
+- Added validation for missing current-weather data.
+- Added checks for required current-weather fields.
+- Added validation for missing forecast data.
+- Added checks for required forecast fields.
+- Added validation to ensure forecast lists have matching lengths.
+- Created automated tests for missing forecast data, missing fields, and inconsistent list lengths.
+- Confirmed valid and invalid city searches still work.
+
+**Result:**
+
+- All 6 automated tests passed using `python -m pytest -v`.
+- Both weather and forecast endpoints passed manual testing.
+- Backend now handles several incomplete external API responses with controlled 502 errors.

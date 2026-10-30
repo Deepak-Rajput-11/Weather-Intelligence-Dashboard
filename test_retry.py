@@ -51,3 +51,84 @@ def test_client_error_does_not_retry():
 
     assert exc.value.status_code == 502
     assert mock_get.call_count == 1
+
+
+def test_forecast_rejects_missing_daily_data():
+    location = {
+        "latitude": 51.5,
+        "longitude": -0.1,
+        "name": "London",
+        "country": "United Kingdom",
+    }
+
+    with patch(
+        "main.get_city_location",
+        return_value=location,
+    ), patch(
+        "main.fetch_api_data",
+        return_value={},
+    ):
+        with pytest.raises(HTTPException) as exc:
+            main.get_forecast("London")
+
+    assert exc.value.status_code == 502
+
+
+def test_forecast_rejects_missing_required_field():
+    location = {
+        "latitude": 51.5,
+        "longitude": -0.1,
+        "name": "London",
+        "country": "United Kingdom",
+    }
+
+    incomplete_data = {
+        "daily": {
+            "time": ["2026-10-30"],
+            "temperature_2m_max": [18],
+            "temperature_2m_min": [12],
+            # weather_code is intentionally missing
+        }
+    }
+
+    with patch(
+        "main.get_city_location",
+        return_value=location,
+    ), patch(
+        "main.fetch_api_data",
+        return_value=incomplete_data,
+    ):
+        with pytest.raises(HTTPException) as exc:
+            main.get_forecast("London")
+
+    assert exc.value.status_code == 502
+
+
+def test_forecast_rejects_inconsistent_data_lengths():
+    location = {
+        "latitude": 51.5,
+        "longitude": -0.1,
+        "name": "London",
+        "country": "United Kingdom",
+    }
+
+    incomplete_data = {
+        "daily": {
+            "time": ["2026-10-30", "2026-10-31"],
+            "temperature_2m_max": [18],
+            "temperature_2m_min": [12, 11],
+            "weather_code": [1, 2],
+        }
+    }
+
+    with patch(
+        "main.get_city_location",
+        return_value=location,
+    ), patch(
+        "main.fetch_api_data",
+        return_value=incomplete_data,
+    ):
+        with pytest.raises(HTTPException) as exc:
+            main.get_forecast("London")
+
+    assert exc.value.status_code == 502

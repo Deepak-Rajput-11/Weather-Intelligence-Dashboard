@@ -36,9 +36,6 @@ def get_weather_description(code: int) -> str:
     return weather_codes.get(code, "Unknown weather condition")
 
 
-import time
-
-
 def fetch_api_data(url: str, params: dict) -> dict:
     max_attempts = 3
 
@@ -101,7 +98,11 @@ def health_check():
 
 
 @app.get("/weather")
-def get_weather(city: str = Query(min_length=2, max_length=100)) -> dict:
+def get_weather(
+    city: str = Query(
+        min_length=2, max_length=100, pattern=r".*\S.*", strip_whitespace=True
+    )
+) -> dict:
 
     # Step 1: Find the city
     location = get_city_location(city)
@@ -120,7 +121,25 @@ def get_weather(city: str = Query(min_length=2, max_length=100)) -> dict:
 
     weather_data = fetch_api_data(weather_url, weather_params)
 
-    current_weather = weather_data["current"]
+    current_weather = weather_data.get("current")
+    if not current_weather:
+        raise HTTPException(
+            status_code=502,
+            detail="Weather service returned incomplete current weather data",
+        )
+
+    required_fields = [
+        "temperature_2m",
+        "relative_humidity_2m",
+        "wind_speed_10m",
+        "weather_code",
+    ]
+
+    if not all(field in current_weather for field in required_fields):
+        raise HTTPException(
+            status_code=502,
+            detail="Weather service returned incomplete current weather data",
+        )
 
     return {
         "city": location["name"],
@@ -134,8 +153,12 @@ def get_weather(city: str = Query(min_length=2, max_length=100)) -> dict:
 
 
 @app.get("/forecast")
-def get_forecast(city: str = Query(min_length=2, max_length=100)) -> dict:
-
+@app.get("/forecast")
+def get_forecast(
+    city: str = Query(
+        min_length=2, max_length=100, pattern=r".*\S.*", strip_whitespace=True
+    )
+) -> dict:
     # Step 1: Find the city
     location = get_city_location(city)
 
@@ -155,7 +178,39 @@ def get_forecast(city: str = Query(min_length=2, max_length=100)) -> dict:
 
     forecast_data = fetch_api_data(forecast_url, forecast_params)
 
-    daily = forecast_data["daily"]
+    daily = forecast_data.get("daily")
+
+    if not daily:
+        raise HTTPException(
+            status_code=502, detail="Weather service returned incomplete forecast data"
+        )
+    required_fields = [
+        "time",
+        "temperature_2m_max",
+        "temperature_2m_min",
+        "weather_code",
+    ]
+
+    if not all(field in daily for field in required_fields):
+        raise HTTPException(
+            status_code=502, detail="Weather service returned incomplete forecast data"
+        )
+
+    if (
+        len(
+            {
+                len(daily["time"]),
+                len(daily["temperature_2m_max"]),
+                len(daily["temperature_2m_min"]),
+                len(daily["weather_code"]),
+            }
+        )
+        != 1
+    ):
+        raise HTTPException(
+            status_code=502,
+            detail="Weather service returned inconsistent forecast data",
+        )
 
     # Step 3: Organize the forecast data
     forecast = []
