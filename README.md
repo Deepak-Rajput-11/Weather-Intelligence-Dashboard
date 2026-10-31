@@ -1,6 +1,6 @@
 # 🌤️ Weather Intelligence Dashboard
 
-A Python-based weather dashboard built with **FastAPI**, **HTML**, **CSS**, and **JavaScript**, using the Open-Meteo API to retrieve and display real-time weather information and a five-day forecast.
+A Python-based weather dashboard built with **FastAPI, HTML, CSS, and JavaScript**, using the Open-Meteo API to retrieve and display real-time weather information and a five-day forecast.
 
 ## 📌 About the Project
 
@@ -17,6 +17,7 @@ The project focuses on Python backend development, REST APIs, external API integ
 - **Weather API:** Open-Meteo
 - **Frontend:** HTML, CSS, JavaScript
 - **Version Control:** Git and GitHub
+- **Testing:** pytest
 
 ## ✨ Features
 
@@ -24,10 +25,10 @@ The project focuses on Python backend development, REST APIs, external API integ
 
 - Initialized the FastAPI backend.
 - Created a home endpoint (`GET /`).
-- Implemented a basic health-check endpoint (`GET /health`).
-- Automatic interactive API documentation using FastAPI.
+- Implemented a health-check endpoint (`GET /health`).
+- Added automatic interactive API documentation using FastAPI.
 - Integrated the Open-Meteo API to retrieve current weather information.
-- Created a weather endpoint (`GET /weather`) for Delhi.
+- Created a weather endpoint (`GET /weather`) for dynamic city searches.
 - Retrieved temperature, humidity, and wind speed from an external API.
 - Implemented dynamic weather search using city names.
 - Integrated Open-Meteo's Geocoding API to convert city names into coordinates.
@@ -35,40 +36,42 @@ The project focuses on Python backend development, REST APIs, external API integ
 - Added human-readable weather descriptions using WMO weather codes.
 - Implemented reusable HTTP request handling for external APIs.
 - Added error handling for network failures, request timeouts, and external API HTTP errors.
-- Implemented a 5-day weather forecast endpoint (`GET /forecast`).
+- Implemented a five-day weather forecast endpoint (`GET /forecast`).
 - Retrieved daily maximum and minimum temperatures using Open-Meteo.
 - Organized forecast data into individual daily records.
 - Added city-based forecast searching and invalid-city handling.
-- Added daily weather codes to the five-day forecast response.
-- Added human-readable weather descriptions to each forecast day.
-- Added city input validation using FastAPI's Query parameters.
+- Added daily weather codes and human-readable descriptions to the five-day forecast.
+- Added city input validation using FastAPI's `Query` parameters.
 - Enforced minimum and maximum city-name lengths for weather and forecast endpoints.
 - Tested valid and invalid city inputs.
 - Refactored city geocoding into a reusable `get_city_location()` function.
 - Removed duplicated geocoding logic from the weather and forecast endpoints.
-- Tested both endpoints to confirm existing functionality remains intact.
 - Added type hints to helper functions and API endpoints.
-- Improved code readability by documenting expected input and return types.
-- Tested existing endpoints to verify that functionality remains intact.
 - Created the frontend using HTML, CSS, and JavaScript.
 - Configured FastAPI to serve the frontend homepage and static files.
 - Connected the frontend to the current-weather and forecast API endpoints using JavaScript Fetch.
 - Displayed current weather details dynamically on the webpage.
 - Rendered five-day forecast data as individual forecast elements.
 - Added CSS Grid styling for the forecast layout.
-- Added basic frontend error messaging for forecast request failures.
-- Added weather icons to current weather conditions using weather codes.
-- Added weather icons to each day of the five-day forecast.
+- Added frontend error messaging for forecast request failures.
+- Added weather icons to current weather conditions and each forecast day.
 - Formatted forecast dates into readable weekday, month, and day labels.
 - Added loading feedback and user-friendly error messages for weather searches.
 - Prevented outdated asynchronous requests from overwriting newer search results.
-- Tested multiple valid cities and invalid city searches.
+- Added a five-day temperature trend chart.
+- Implemented a reusable `renderTemperatureChart()` function.
+- Added chart loading and error-state handling.
+- Implemented a retry mechanism for temporary external API failures.
+- Added automated backend tests using pytest and mocked API responses.
+- Added validation for current-weather and forecast API response structures.
+- Added checks for required fields, numerical values, weather codes, and forecast list consistency.
+- Strengthened geocoding response validation.
+- Tested weather, forecast, and health endpoints.
 
 ### Planned Features
 
-- Visualize weather information using charts.
 - Polish the user interface and improve accessibility.
-- Complete broader application testing and validation.
+- Expand automated test coverage and perform broader application testing.
 - Deploy the application.
 
 ## ⚙️ Installation and Setup
@@ -110,16 +113,26 @@ The backend will run locally at:
 
 ## 🔗 API Endpoints
 
-| Method | Endpoint                | Description                                                                        |
-| ------ | ----------------------- | ---------------------------------------------------------------------------------- | --- |
-| GET    | `/`                     | Serves the Weather Intelligence Dashboard homepage                                 |     |
-| GET    | `/health`               | Returns a basic application health status                                          |
-| GET    | `/weather?city=London`  | Returns current weather information for the requested city                         |
-| GET    | `/forecast?city=London` | Returns a 5-day forecast with daily high/low temperatures and weather descriptions |
+| Method | Endpoint                | Description                                                                           |
+| ------ | ----------------------- | ------------------------------------------------------------------------------------- |
+| GET    | `/`                     | Serves the Weather Intelligence Dashboard homepage                                    |
+| GET    | `/health`               | Returns the application health status                                                 |
+| GET    | `/weather?city=London`  | Returns current weather information for the requested city                            |
+| GET    | `/forecast?city=London` | Returns a five-day forecast with daily high/low temperatures and weather descriptions |
 
 FastAPI's interactive API documentation is available at:
 
 `http://127.0.0.1:8000/docs`
+
+## 🧪 Running Automated Tests
+
+Run the complete test suite using:
+
+```bash
+python -m pytest -v
+```
+
+The tests use mocked API responses to verify backend behavior without depending on real external API requests.
 
 ## 📅 Development Log
 
@@ -190,6 +203,8 @@ FastAPI's interactive API documentation is available at:
 - Implemented the `GET /weather` endpoint in FastAPI.
 - Tested the endpoint successfully in the browser.
 - Created `requirements.txt` to document project dependencies.
+
+---
 
 ### Day 3 — October 17, 2026 | Dynamic Weather Search and Geocoding
 
@@ -281,6 +296,8 @@ FastAPI's interactive API documentation is available at:
 - Verified that invalid city names return HTTP 404 with an appropriate error message.
 - Confirmed that each forecast day includes its date, maximum temperature, minimum temperature, weather code, and weather description.
 
+---
+
 ### Day 7 — October 21, 2026 | City Input Validation
 
 **Concepts Learned:**
@@ -299,6 +316,8 @@ FastAPI's interactive API documentation is available at:
 - Tested short, empty, and valid city inputs.
 - Confirmed that both endpoints continue to work correctly.
 
+---
+
 ### Day 8 — October 22, 2026 | Code Reuse and Geocoding Refactoring
 
 **Concepts Learned:**
@@ -316,6 +335,8 @@ FastAPI's interactive API documentation is available at:
 - Updated `get_forecast()` to use the shared function.
 - Tested both endpoints with valid and invalid city names.
 - Confirmed that existing weather and forecast functionality continues to work.
+
+---
 
 ### Day 9 — October 23, 2026 | Type Hints and Code Readability
 
@@ -363,6 +384,8 @@ FastAPI's interactive API documentation is available at:
 - Implemented basic error messaging for forecast request failures.
 - Tested the dashboard using a city search.
 
+---
+
 ### Day 11 — October 25, 2026 | Frontend Error Handling and Request Coordination
 
 **Concepts Learned:**
@@ -406,8 +429,6 @@ FastAPI's interactive API documentation is available at:
 
 ---
 
----
-
 ### Day 13 — October 27, 2026 | Weather Icons, Forecast Dates, and Frontend Debugging
 
 **Concepts Learned:**
@@ -431,6 +452,8 @@ FastAPI's interactive API documentation is available at:
 - Tested invalid city handling and confirmed that the dashboard displays an appropriate error message.
 
 **Result:** The dashboard displays current weather and five-day forecast information with weather icons and readable dates. Valid searches, invalid city handling, and the updated frontend behavior were tested successfully.
+
+---
 
 ### Day 14 — October 28, 2026 | Five-Day Temperature Chart and Data Visualization
 
@@ -459,6 +482,8 @@ FastAPI's interactive API documentation is available at:
 
 **Result:** The dashboard now displays a five-day temperature trend alongside current weather conditions and the five-day forecast. The chart updates with successful searches and resets appropriately when a search fails.
 
+---
+
 ### Day 15 — October 29, 2026 | Weather API Retry Mechanism & Automated Testing
 
 **Concepts Learned:**
@@ -477,8 +502,9 @@ FastAPI's interactive API documentation is available at:
 - Created `test_retry.py` with three automated tests covering server errors, network failures, and client errors.
 - Ran the complete test suite and verified that all three tests passed.
 
-**Result:**
-Implemented and tested a retry mechanism to make weather API requests more resilient to temporary failures. Added automated tests that verify retry behavior without making real external API calls.
+**Result:** Implemented and tested a retry mechanism to make weather API requests more resilient to temporary failures. Added automated tests that verify retry behavior without making real external API calls.
+
+---
 
 ### Day 16 — October 30, 2026 | API Response Validation and Automated Testing
 
@@ -506,3 +532,23 @@ Implemented and tested a retry mechanism to make weather API requests more resil
 - All 6 automated tests passed using `python -m pytest -v`.
 - Both weather and forecast endpoints passed manual testing.
 - Backend now handles several incomplete external API responses with controlled 502 errors.
+
+---
+
+### Day 17 — October 31, 2026 | Backend Response Validation and Testing
+
+**Concepts Learned:**
+
+- Validating external API response structures and field types.
+- Distinguishing missing, malformed, and incomplete API data.
+- Validating weather codes and numerical values.
+- Testing backend error handling with mocked API responses.
+- Strengthening geocoding response validation.
+
+**Work Completed:**
+
+- Added current weather and forecast response validation.
+- Strengthened geocoding response validation.
+- Added automated tests for malformed weather and forecast data.
+- Verified all 12 automated tests pass.
+- Manually verified the weather, forecast, and health endpoints successfully.

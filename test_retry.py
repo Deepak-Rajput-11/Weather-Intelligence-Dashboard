@@ -132,3 +132,162 @@ def test_forecast_rejects_inconsistent_data_lengths():
             main.get_forecast("London")
 
     assert exc.value.status_code == 502
+
+
+def test_weather_rejects_invalid_api_response():
+    location = {
+        "latitude": 51.5,
+        "longitude": -0.1,
+        "name": "London",
+        "country": "United Kingdom",
+    }
+
+    with patch(
+        "main.get_city_location",
+        return_value=location,
+    ), patch(
+        "main.fetch_api_data",
+        return_value=[25, 60, 12],
+    ):
+        with pytest.raises(HTTPException) as exc:
+            main.get_weather("London")
+
+    assert exc.value.status_code == 502
+
+
+def test_weather_rejects_invalid_current_data():
+    location = {
+        "latitude": 51.5,
+        "longitude": -0.1,
+        "name": "London",
+        "country": "United Kingdom",
+    }
+
+    invalid_weather_data = {"current": [25, 60, 12]}
+
+    with patch(
+        "main.get_city_location",
+        return_value=location,
+    ), patch(
+        "main.fetch_api_data",
+        return_value=invalid_weather_data,
+    ):
+        with pytest.raises(HTTPException) as exc:
+            main.get_weather("London")
+
+    assert exc.value.status_code == 502
+
+
+def test_weather_rejects_missing_required_field():
+    location = {
+        "latitude": 51.5,
+        "longitude": -0.1,
+        "name": "London",
+        "country": "United Kingdom",
+    }
+
+    invalid_weather_data = {
+        "current": {"temperature_2m": 25, "relative_humidity_2m": 60, "weather_code": 1}
+    }
+
+    with patch(
+        "main.get_city_location",
+        return_value=location,
+    ), patch(
+        "main.fetch_api_data",
+        return_value=invalid_weather_data,
+    ):
+        with pytest.raises(HTTPException) as exc:
+            main.get_weather("London")
+
+    assert exc.value.status_code == 502
+
+
+def test_weather_rejects_non_numeric_values():
+    location = {
+        "latitude": 51.5,
+        "longitude": -0.1,
+        "name": "London",
+        "country": "United Kingdom",
+    }
+
+    invalid_weather_data = {
+        "current": {
+            "temperature_2m": None,
+            "relative_humidity_2m": 60,
+            "wind_speed_10m": 12,
+            "weather_code": 1,
+        }
+    }
+
+    with patch(
+        "main.get_city_location",
+        return_value=location,
+    ), patch(
+        "main.fetch_api_data",
+        return_value=invalid_weather_data,
+    ):
+        with pytest.raises(HTTPException) as exc:
+            main.get_weather("London")
+
+    assert exc.value.status_code == 502
+
+
+def test_forecast_rejects_non_list_data():
+    location = {
+        "latitude": 51.5,
+        "longitude": -0.1,
+        "name": "London",
+        "country": "United Kingdom",
+    }
+
+    invalid_forecast_data = {
+        "daily": {
+            "time": ["2026-10-31", "2026-11-01"],
+            "temperature_2m_max": "25",
+            "temperature_2m_min": [15, 16],
+            "weather_code": [1, 2],
+        }
+    }
+
+    with patch(
+        "main.get_city_location",
+        return_value=location,
+    ), patch(
+        "main.fetch_api_data",
+        return_value=invalid_forecast_data,
+    ):
+        with pytest.raises(HTTPException) as exc:
+            main.get_forecast("London")
+
+    assert exc.value.status_code == 502
+
+
+def test_forecast_rejects_non_numeric_values():
+    location = {
+        "latitude": 51.5,
+        "longitude": -0.1,
+        "name": "London",
+        "country": "United Kingdom",
+    }
+
+    invalid_forecast_data = {
+        "daily": {
+            "time": ["2026-10-31", "2026-11-01"],
+            "temperature_2m_max": [25, "invalid"],
+            "temperature_2m_min": [15, 16],
+            "weather_code": [1, 2],
+        }
+    }
+
+    with patch(
+        "main.get_city_location",
+        return_value=location,
+    ), patch(
+        "main.fetch_api_data",
+        return_value=invalid_forecast_data,
+    ):
+        with pytest.raises(HTTPException) as exc:
+            main.get_forecast("London")
+
+    assert exc.value.status_code == 502

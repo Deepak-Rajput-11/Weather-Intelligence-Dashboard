@@ -81,10 +81,43 @@ def get_city_location(city: str) -> dict:
 
     geo_data = fetch_api_data(geo_url, geo_params)
 
-    if not geo_data.get("results"):
-        raise HTTPException(status_code=404, detail="City not found")
+    if not isinstance(geo_data, dict):
+        raise HTTPException(
+            status_code=502,
+            detail="Weather service returned invalid location data",
+        )
 
-    return geo_data["results"][0]
+    results = geo_data.get("results")
+
+    if results is None:
+        raise HTTPException(
+            status_code=404,
+            detail="City not found",
+        )
+
+    if not isinstance(results, list) or not results:
+        raise HTTPException(
+            status_code=502,
+            detail="Weather service returned invalid location data",
+        )
+
+    location = results[0]
+
+    if not isinstance(location, dict):
+        raise HTTPException(
+            status_code=502,
+            detail="Weather service returned invalid location data",
+        )
+
+    required_fields = ["latitude", "longitude", "name", "country"]
+
+    if not all(field in location for field in required_fields):
+        raise HTTPException(
+            status_code=502,
+            detail="Weather service returned incomplete location data",
+        )
+
+    return location
 
 
 @app.get("/")
@@ -100,7 +133,10 @@ def health_check():
 @app.get("/weather")
 def get_weather(
     city: str = Query(
-        min_length=2, max_length=100, pattern=r".*\S.*", strip_whitespace=True
+        min_length=2,
+        max_length=100,
+        pattern=r".*\S.*",
+        strip_whitespace=True,
     )
 ) -> dict:
 
@@ -110,7 +146,7 @@ def get_weather(
     latitude = location["latitude"]
     longitude = location["longitude"]
 
-    # Step 2: Fetch weather using those coordinates
+    # Step 2: Fetch current weather
     weather_url = "https://api.open-meteo.com/v1/forecast"
 
     weather_params = {
@@ -121,11 +157,18 @@ def get_weather(
 
     weather_data = fetch_api_data(weather_url, weather_params)
 
-    current_weather = weather_data.get("current")
-    if not current_weather:
+    if not isinstance(weather_data, dict):
         raise HTTPException(
             status_code=502,
-            detail="Weather service returned incomplete current weather data",
+            detail="Weather service returned invalid response data",
+        )
+
+    current_weather = weather_data.get("current")
+
+    if not isinstance(current_weather, dict):
+        raise HTTPException(
+            status_code=502,
+            detail="Weather service returned invalid current weather data",
         )
 
     required_fields = [
@@ -141,6 +184,30 @@ def get_weather(
             detail="Weather service returned incomplete current weather data",
         )
 
+    temperature_fields = [
+        "temperature_2m",
+        "relative_humidity_2m",
+        "wind_speed_10m",
+    ]
+
+    if not all(
+        isinstance(current_weather[field], (int, float))
+        and not isinstance(current_weather[field], bool)
+        for field in temperature_fields
+    ):
+        raise HTTPException(
+            status_code=502,
+            detail="Weather service returned invalid current weather data",
+        )
+
+    if not isinstance(current_weather["weather_code"], int) or isinstance(
+        current_weather["weather_code"], bool
+    ):
+        raise HTTPException(
+            status_code=502,
+            detail="Weather service returned invalid weather code",
+        )
+
     return {
         "city": location["name"],
         "country": location["country"],
@@ -153,12 +220,15 @@ def get_weather(
 
 
 @app.get("/forecast")
-@app.get("/forecast")
 def get_forecast(
     city: str = Query(
-        min_length=2, max_length=100, pattern=r".*\S.*", strip_whitespace=True
+        min_length=2,
+        max_length=100,
+        pattern=r".*\S.*",
+        strip_whitespace=True,
     )
 ) -> dict:
+
     # Step 1: Find the city
     location = get_city_location(city)
 
@@ -178,12 +248,21 @@ def get_forecast(
 
     forecast_data = fetch_api_data(forecast_url, forecast_params)
 
+    if not isinstance(forecast_data, dict):
+        raise HTTPException(
+            status_code=502,
+            detail="Weather service returned invalid response data",
+        )
+
     daily = forecast_data.get("daily")
 
-    if not daily:
+    # Step 3: Validate daily data
+    if not isinstance(daily, dict):
         raise HTTPException(
-            status_code=502, detail="Weather service returned incomplete forecast data"
+            status_code=502,
+            detail="Weather service returned invalid forecast data",
         )
+
     required_fields = [
         "time",
         "temperature_2m_max",
@@ -193,9 +272,57 @@ def get_forecast(
 
     if not all(field in daily for field in required_fields):
         raise HTTPException(
-            status_code=502, detail="Weather service returned incomplete forecast data"
+            status_code=502,
+            detail="Weather service returned incomplete forecast data",
         )
 
+    # Step 4: Validate field types
+    if not all(isinstance(daily[field], list) for field in required_fields):
+        raise HTTPException(
+            status_code=502,
+            detail="Weather service returned invalid forecast data",
+        )
+
+    # Step 5: Reject empty forecast data
+    if not daily["time"]:
+        raise HTTPException(
+            status_code=502,
+            detail="Weather service returned empty forecast data",
+        )
+
+    # Step 6: Validate numeric values
+    temperature_fields = [
+        "temperature_2m_max",
+        "temperature_2m_min",
+    ]
+
+    if not all(
+        isinstance(value, (int, float)) and not isinstance(value, bool)
+        for field in temperature_fields
+        for value in daily[field]
+    ):
+        raise HTTPException(
+            status_code=502,
+            detail="Weather service returned invalid forecast temperatures",
+        )
+
+    if not all(
+        isinstance(value, int) and not isinstance(value, bool)
+        for value in daily["weather_code"]
+    ):
+        raise HTTPException(
+            status_code=502,
+            detail="Weather service returned invalid forecast weather codes",
+        )
+
+    # Step 7: Validate dates
+    if not all(isinstance(value, str) and value.strip() for value in daily["time"]):
+        raise HTTPException(
+            status_code=502,
+            detail="Weather service returned invalid forecast dates",
+        )
+
+    # Step 8: Check matching list lengths
     if (
         len(
             {
@@ -212,7 +339,7 @@ def get_forecast(
             detail="Weather service returned inconsistent forecast data",
         )
 
-    # Step 3: Organize the forecast data
+    # Step 9: Organize forecast data
     forecast = []
 
     for i in range(len(daily["time"])):
@@ -226,7 +353,7 @@ def get_forecast(
 
         forecast.append(day)
 
-    # Step 4: Return the result
+    # Step 10: Return the result
     return {
         "city": location["name"],
         "country": location["country"],
