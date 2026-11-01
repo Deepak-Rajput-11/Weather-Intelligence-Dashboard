@@ -117,6 +117,21 @@ def get_city_location(city: str) -> dict:
             detail="Weather service returned incomplete location data",
         )
 
+    if (
+        not isinstance(location["latitude"], (int, float))
+        or isinstance(location["latitude"], bool)
+        or not isinstance(location["longitude"], (int, float))
+        or isinstance(location["longitude"], bool)
+        or not isinstance(location["name"], str)
+        or not location["name"].strip()
+        or not isinstance(location["country"], str)
+        or not location["country"].strip()
+    ):
+        raise HTTPException(
+            status_code=502,
+            detail="Weather service returned invalid location data",
+        )
+
     return location
 
 

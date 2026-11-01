@@ -291,3 +291,93 @@ def test_forecast_rejects_non_numeric_values():
             main.get_forecast("London")
 
     assert exc.value.status_code == 502
+
+
+def test_geocoding_rejects_invalid_api_response():
+    with patch("main.fetch_api_data", return_value=["invalid"]):
+        with pytest.raises(HTTPException) as exc:
+            main.get_city_location("London")
+
+    assert exc.value.status_code == 502
+
+
+def test_geocoding_rejects_invalid_result_structure():
+    with patch(
+        "main.fetch_api_data",
+        return_value={"results": ["invalid"]},
+    ):
+        with pytest.raises(HTTPException) as exc:
+            main.get_city_location("London")
+
+    assert exc.value.status_code == 502
+
+
+def test_geocoding_returns_valid_location():
+    location = {
+        "latitude": 51.5074,
+        "longitude": -0.1278,
+        "name": "London",
+        "country": "United Kingdom",
+    }
+
+    with patch(
+        "main.fetch_api_data",
+        return_value={"results": [location]},
+    ):
+        result = main.get_city_location("London")
+
+    assert result == location
+
+
+def test_geocoding_rejects_missing_required_field():
+    location = {
+        "latitude": 51.5074,
+        "longitude": -0.1278,
+        "name": "London",
+        # country is missing
+    }
+
+    with patch(
+        "main.fetch_api_data",
+        return_value={"results": [location]},
+    ):
+        with pytest.raises(HTTPException) as exc:
+            main.get_city_location("London")
+
+    assert exc.value.status_code == 502
+
+
+def test_geocoding_rejects_non_numeric_coordinates():
+    location = {
+        "latitude": "invalid",
+        "longitude": -0.1278,
+        "name": "London",
+        "country": "United Kingdom",
+    }
+
+    with patch(
+        "main.fetch_api_data",
+        return_value={"results": [location]},
+    ):
+        with pytest.raises(HTTPException) as exc:
+            main.get_city_location("London")
+
+    assert exc.value.status_code == 502
+
+
+def test_geocoding_rejects_empty_location_text():
+    location = {
+        "latitude": 51.5074,
+        "longitude": -0.1278,
+        "name": "",
+        "country": "United Kingdom",
+    }
+
+    with patch(
+        "main.fetch_api_data",
+        return_value={"results": [location]},
+    ):
+        with pytest.raises(HTTPException) as exc:
+            main.get_city_location("London")
+
+    assert exc.value.status_code == 502

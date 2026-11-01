@@ -552,3 +552,33 @@ The tests use mocked API responses to verify backend behavior without depending 
 - Added automated tests for malformed weather and forecast data.
 - Verified all 12 automated tests pass.
 - Manually verified the weather, forecast, and health endpoints successfully.
+
+---
+
+### Day 18 — November 1, 2026 | Geocoding Validation and Backend Reliability
+
+**Concepts Learned:**
+
+- Validating external geocoding API response structures.
+- Checking required fields in location data.
+- Validating latitude and longitude data types.
+- Ensuring city names and country names are non-empty strings.
+- Writing automated tests using mocked API responses.
+- Testing both valid and malformed geocoding responses.
+
+**Work Completed:**
+
+- Strengthened the `get_city_location()` function with additional response validation.
+- Added checks for valid numerical latitude and longitude values.
+- Added validation for non-empty city and country names.
+- Added automated tests for malformed geocoding responses.
+- Tested invalid result structures and missing required fields.
+- Tested successful location retrieval.
+- Tested invalid coordinates and empty location text.
+- Ran the complete automated test suite successfully.
+
+**Result:**
+
+- All 18 automated tests passed using `python -m pytest -v`.
+- Geocoding now handles malformed, incomplete, and invalid location data with controlled HTTP 502 errors.
+- Verified that valid location data is returned correctly.
