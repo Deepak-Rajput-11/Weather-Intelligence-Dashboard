@@ -43,7 +43,15 @@ def fetch_api_data(url: str, params: dict) -> dict:
         try:
             response = httpx.get(url, params=params, timeout=10.0)
             response.raise_for_status()
-            return response.json()
+
+            try:
+                return response.json()
+
+            except ValueError:
+                raise HTTPException(
+                    status_code=502,
+                    detail="Weather service returned invalid JSON data",
+                )
 
         except httpx.RequestError:
             if attempt == max_attempts - 1:

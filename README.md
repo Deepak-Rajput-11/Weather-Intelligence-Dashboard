@@ -582,3 +582,33 @@ The tests use mocked API responses to verify backend behavior without depending 
 - All 18 automated tests passed using `python -m pytest -v`.
 - Geocoding now handles malformed, incomplete, and invalid location data with controlled HTTP 502 errors.
 - Verified that valid location data is returned correctly.
+
+---
+
+### Day 19 — November 2, 2026 | API Response Reliability and JSON Error Handling
+
+**Concepts Learned:**
+
+- Handling invalid JSON responses from external APIs.
+- Understanding JSON decoding errors.
+- Distinguishing HTTP errors from malformed response bodies.
+- Converting unexpected external API errors into controlled HTTP exceptions.
+- Testing retry limits for repeated server errors.
+
+**Work Completed:**
+
+- Added an automated test for three consecutive HTTP 500 responses.
+- Verified that the retry mechanism stops after three attempts.
+- Added an automated test for invalid JSON returned with HTTP 200.
+- Updated `fetch_api_data()` to handle JSON decoding errors.
+- Converted invalid JSON responses into controlled HTTP 502 errors.
+- Verified that malformed JSON responses do not trigger unnecessary retries.
+- Ran the complete automated test suite successfully.
+- Manually tested the current-weather and five-day forecast endpoints.
+
+**Result:**
+
+- All 20 automated tests passed.
+- `/weather?city=London` returned HTTP 200.
+- `/forecast?city=London` returned HTTP 200.
+- Network failures, HTTP errors, and invalid JSON responses now have controlled error handling.

@@ -381,3 +381,39 @@ def test_geocoding_rejects_empty_location_text():
             main.get_city_location("London")
 
     assert exc.value.status_code == 502
+
+
+def test_server_error_retries_three_times():
+    request = httpx.Request("GET", "https://example.com")
+
+    failed_responses = [httpx.Response(500, request=request) for _ in range(3)]
+
+    with patch(
+        "main.httpx.get",
+        side_effect=failed_responses,
+    ) as mock_get, patch("main.time.sleep"):
+        with pytest.raises(HTTPException) as exc:
+            main.fetch_api_data("https://example.com", {})
+
+    assert exc.value.status_code == 502
+    assert mock_get.call_count == 3
+
+
+def test_invalid_json_response():
+    request = httpx.Request("GET", "https://example.com")
+
+    invalid_response = httpx.Response(
+        200,
+        text="This is not valid JSON",
+        request=request,
+    )
+
+    with patch(
+        "main.httpx.get",
+        return_value=invalid_response,
+    ) as mock_get:
+        with pytest.raises(HTTPException) as exc:
+            main.fetch_api_data("https://example.com", {})
+
+    assert exc.value.status_code == 502
+    assert mock_get.call_count == 1
