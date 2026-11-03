@@ -612,3 +612,32 @@ The tests use mocked API responses to verify backend behavior without depending 
 - `/weather?city=London` returned HTTP 200.
 - `/forecast?city=London` returned HTTP 200.
 - Network failures, HTTP errors, and invalid JSON responses now have controlled error handling.
+
+---
+
+### Day 20 — November 3, 2026 | FastAPI Endpoint Testing
+
+**Concepts Learned:**
+
+- Testing FastAPI endpoints using `TestClient`.
+- Sending GET requests to application endpoints.
+- Checking HTTP response status codes and response data.
+- Testing successful API responses and error scenarios.
+- Testing query parameter validation.
+- Understanding the difference between function-level tests and endpoint-level tests.
+
+**Work Completed:**
+
+- Integrated FastAPI's `TestClient` into the automated test suite.
+- Added tests for the `/health` endpoint.
+- Tested successful responses from `/weather` and `/forecast`.
+- Tested city-not-found error handling for the weather endpoint.
+- Tested missing, too-short, and too-long city parameters.
+- Verified endpoint behavior using mocked backend functions.
+- Ran the complete automated test suite successfully.
+
+**Result:**
+
+- All 27 automated tests passed.
+- Successfully tested backend functions and FastAPI endpoints.
+- Confirmed that endpoint validation and response handling work as expected.
