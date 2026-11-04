@@ -70,8 +70,6 @@ The project focuses on Python backend development, REST APIs, external API integ
 
 ### Planned Features
 
-- Polish the user interface and improve accessibility.
-- Expand automated test coverage and perform broader application testing.
 - Deploy the application.
 
 ## ⚙️ Installation and Setup
@@ -101,15 +99,18 @@ python -m venv .venv
 python -m pip install -r requirements.txt
 ```
 
-### 5. Start the Development Server
+### 5. Start the Application
 
-```bash
-fastapi dev main.py
-```
+**Option 1 — Windows (Recommended)**
 
-The backend will run locally at:
+Double-click `run.bat` in the project folder. It will activate the virtual environment, start the FastAPI server, and open the dashboard in your browser.
 
-`http://127.0.0.1:8000`
+**Option 2 — Manual Startup**
+
+Activate the virtual environment:
+
+````bash
+.\.venv\Scripts\Activate.ps1
 
 ## 🔗 API Endpoints
 
@@ -130,7 +131,7 @@ Run the complete test suite using:
 
 ```bash
 python -m pytest -v
-```
+````
 
 The tests use mocked API responses to verify backend behavior without depending on real external API requests.
 
@@ -641,3 +642,35 @@ The tests use mocked API responses to verify backend behavior without depending 
 - All 27 automated tests passed.
 - Successfully tested backend functions and FastAPI endpoints.
 - Confirmed that endpoint validation and response handling work as expected.
+
+---
+
+### Day 21 — November 4, 2026 | Dashboard Refinement, Responsive Design and Startup Automation
+
+**Concepts Learned:**
+
+- Improving frontend layout and user experience using CSS.
+- Understanding responsive design for different screen sizes.
+- Testing mobile layouts using Chrome DevTools device emulation.
+- Automating application startup using Windows batch files.
+- Integrating frontend and backend functionality.
+
+**Work Completed:**
+
+- Refined the dashboard layout and visual styling.
+- Improved spacing and presentation of weather information.
+- Added responsive layout adjustments for mobile screens.
+- Created `run.bat` to automate virtual environment activation and FastAPI startup.
+- Configured automatic browser opening when launching the application.
+- Tested current weather, five-day forecast, and temperature chart.
+- Verified invalid-city error handling.
+- Tested the dashboard using mobile device emulation.
+- Re-ran the complete automated test suite.
+
+**Result:**
+
+- All 27 automated tests passed.
+- Current weather, forecast, and temperature chart work correctly.
+- Invalid city searches display an appropriate error message.
+- Dashboard layout works on desktop and mobile screens.
+- Application startup is automated using `run.bat`.

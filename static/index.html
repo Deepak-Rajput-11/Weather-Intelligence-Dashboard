@@ -3,69 +3,120 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Weather Intelligence Dashboard</title>
+
     <link rel="stylesheet" href="/static/style.css" />
   </head>
+
   <body>
-    <header>
-      <h1>Weather Intelligence Dashboard</h1>
-      <p>Understand the weather. Plan your day.</p>
-    </header>
-
-    <main>
-      <section>
-        <h2>Search Weather</h2>
-
-        <form id="search-form">
-          <input
-            type="text"
-            id="city-input"
-            placeholder="Enter a city name"
-            required
-          />
-          <button type="submit">Search</button>
-        </form>
-
-        <p id="status-message"></p>
-      </section>
-      <section id="current-weather">
-        <h2>Current Weather</h2>
-
-        <h3 id="location-name">Your city</h3>
-        <p id="current-description">Weather conditions will appear here.</p>
-
-        <p>
-          Temperature:
-          <span id="current-temperature">--</span> °C
-        </p>
-
-        <p>
-          Humidity:
-          <span id="current-humidity">--</span>%
-        </p>
-
-        <p>
-          Wind Speed:
-          <span id="current-wind">--</span> km/h
-        </p>
-      </section>
-
-      <section id="forecast-section">
-        <h2>Five-Day Forecast</h2>
-
-        <div id="forecast-list">
-          <p>Search for a city to see its forecast.</p>
+    <div class="dashboard-container">
+      <header class="header">
+        <div class="brand">
+          <span class="brand-icon">☀</span>
+          <h1>Weather Intelligence</h1>
         </div>
-      </section>
-      <section id="temperature-chart-section">
-        <h2>Five-Day Temperature Trend</h2>
-        <p>Compare daily high and low temperatures.</p>
 
-        <div id="temperature-chart">
-          <p>Search for a city to see its temperature trend.</p>
-        </div>
-      </section>
-    </main>
-    <script src="/static/script.js?v=3"></script>
+        <p>Your personal weather intelligence dashboard</p>
+      </header>
+
+      <main>
+        <section class="search-section">
+          <div>
+            <h2>Explore the Weather</h2>
+            <p>
+              Search for a city to discover its current weather and forecast.
+            </p>
+          </div>
+
+          <form id="search-form">
+            <input
+              type="text"
+              id="city-input"
+              placeholder="Enter city name..."
+              aria-label="City name"
+              required
+            />
+
+            <button type="submit">Search Weather</button>
+          </form>
+
+          <p id="status-message" role="status" aria-live="polite"></p>
+        </section>
+
+        <section id="current-weather" class="current-weather-section">
+          <div class="section-heading">
+            <div>
+              <h2>Current Weather</h2>
+              <p>Real-time weather conditions</p>
+            </div>
+          </div>
+
+          <div class="current-weather-content">
+            <div class="weather-location">
+              <h3 id="location-name">Your city</h3>
+              <p id="current-description">
+                Weather conditions will appear here.
+              </p>
+            </div>
+
+            <div class="main-temperature">
+              <span id="current-temperature">--</span>
+              <span class="temperature-unit">°C</span>
+            </div>
+
+            <div class="weather-details">
+              <div class="weather-detail">
+                <span>💧</span>
+                <div>
+                  <p>Humidity</p>
+                  <strong> <span id="current-humidity">--</span>% </strong>
+                </div>
+              </div>
+
+              <div class="weather-detail">
+                <span>💨</span>
+                <div>
+                  <p>Wind Speed</p>
+                  <strong> <span id="current-wind">--</span> km/h </strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="forecast-section" class="forecast-section">
+          <div class="section-heading">
+            <div>
+              <h2>Five-Day Forecast</h2>
+              <p>Weather outlook for the coming days</p>
+            </div>
+          </div>
+
+          <div id="forecast-list" class="forecast-grid">
+            <p>Search for a city to see its forecast.</p>
+          </div>
+        </section>
+
+        <section id="temperature-chart-section" class="chart-section">
+          <div class="section-heading">
+            <div>
+              <h2>Temperature Trends</h2>
+              <p>Compare daily high and low temperatures</p>
+            </div>
+          </div>
+
+          <div id="temperature-chart">
+            <p>Search for a city to see its temperature trend.</p>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <p>Weather Intelligence Dashboard · Powered by FastAPI</p>
+      </footer>
+    </div>
+
+    <script src="/static/script.js?v=4"></script>
   </body>
 </html>
