@@ -64,9 +64,7 @@ def fetch_api_data(url: str, params: dict) -> dict:
                     detail="Weather service returned invalid JSON data",
                 )
 
-        except httpx.RequestError as error:
-            print(f"External API Connection Error: {error}")
-
+        except httpx.RequestError:
             if attempt == max_attempts - 1:
                 raise HTTPException(
                     status_code=503,
@@ -74,11 +72,6 @@ def fetch_api_data(url: str, params: dict) -> dict:
                 )
 
         except httpx.HTTPStatusError as error:
-            print(
-                f"External API Status: {error.response.status_code} | "
-                f"Response: {error.response.text}"
-            )
-
             if error.response.status_code < 500:
                 raise HTTPException(
                     status_code=502,

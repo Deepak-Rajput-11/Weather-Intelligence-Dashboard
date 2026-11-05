@@ -674,3 +674,28 @@ The tests use mocked API responses to verify backend behavior without depending 
 - Invalid city searches display an appropriate error message.
 - Dashboard layout works on desktop and mobile screens.
 - Application startup is automated using `run.bat`.
+
+**### Day 22 — November 5, 2026 | Backend Debugging Cleanup and Error Handling**
+
+**Concepts Learned:**
+
+- Understanding the purpose of temporary debugging statements.
+- Keeping debugging output separate from normal application behavior.
+- Maintaining existing retry logic and error handling during code cleanup.
+- Understanding the importance of preserving existing functionality while making small code changes.
+
+**Work Completed:**
+
+- Reviewed the `fetch_api_data()` function.
+- Removed temporary debugging `print()` statements.
+- Restored the clean implementation of the API request function.
+- Preserved the existing retry mechanism with a maximum of three attempts.
+- Retained error handling for network failures, HTTP errors, and invalid JSON responses.
+- Preserved the one-second delay between retry attempts.
+
+**Result:**
+
+- Removed temporary debugging output from `fetch_api_data()`.
+- Restored clean API request handling without changing the existing retry and error-handling behavior.
+
+---
