@@ -675,7 +675,7 @@ The tests use mocked API responses to verify backend behavior without depending 
 - Dashboard layout works on desktop and mobile screens.
 - Application startup is automated using `run.bat`.
 
-**### Day 22 — November 5, 2026 | Backend Debugging Cleanup and Error Handling**
+### Day 22 — November 5, 2026 | Backend Debugging Cleanup and Error Handling\*\*
 
 **Concepts Learned:**
 
