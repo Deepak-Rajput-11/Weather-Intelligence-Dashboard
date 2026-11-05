@@ -1,10 +1,21 @@
 import httpx
 import time
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException
+from typing import Annotated
+from pydantic import StringConstraints
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
+CityName = Annotated[
+    str,
+    StringConstraints(
+        strip_whitespace=True,
+        min_length=2,
+        max_length=100,
+        pattern=r".*\S.*",
+    ),
+]
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
@@ -154,14 +165,7 @@ def health_check():
 
 
 @app.get("/weather")
-def get_weather(
-    city: str = Query(
-        min_length=2,
-        max_length=100,
-        pattern=r".*\S.*",
-        strip_whitespace=True,
-    )
-) -> dict:
+def get_weather(city: CityName) -> dict:
 
     # Step 1: Find the city
     location = get_city_location(city)
@@ -243,14 +247,7 @@ def get_weather(
 
 
 @app.get("/forecast")
-def get_forecast(
-    city: str = Query(
-        min_length=2,
-        max_length=100,
-        pattern=r".*\S.*",
-        strip_whitespace=True,
-    )
-) -> dict:
+def get_forecast(city: CityName) -> dict:
 
     # Step 1: Find the city
     location = get_city_location(city)
