@@ -15,3 +15,6 @@ tempCodeRunnerFile.py
 forecast_test.py
 geocoding_test.py
 weather_test.py
+
+# Pytest cache
+.pytest_cache/
