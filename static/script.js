@@ -163,6 +163,10 @@ function showErrorMessage(error) {
     return "City not found. Please enter a valid city name.";
   }
 
+  if (error.message.includes("422")) {
+    return "Invalid city name. Please enter at least 2 characters.";
+  }
+
   if (error.message.includes("502") || error.message.includes("503")) {
     return "Weather service is temporarily unavailable. Please try again later.";
   }

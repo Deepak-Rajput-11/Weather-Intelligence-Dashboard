@@ -67,6 +67,7 @@ The project focuses on Python backend development, REST APIs, external API integ
 - Added checks for required fields, numerical values, weather codes, and forecast list consistency.
 - Strengthened geocoding response validation.
 - Tested weather, forecast, and health endpoints.
+- Added endpoint-level tests for invalid JSON responses from the geocoding and forecast APIs.
 
 ### Planned Features
 
@@ -109,8 +110,19 @@ Double-click `run.bat` in the project folder. It will activate the virtual envir
 
 Activate the virtual environment:
 
-````bash
+```powershell
 .\.venv\Scripts\Activate.ps1
+```
+
+Start the FastAPI development server:
+
+```bash
+python -m fastapi dev main.py
+```
+
+Open the dashboard in your browser:
+
+[http://127.0.0.1:8000](http://127.0.0.1:8000)
 
 ## 🔗 API Endpoints
 
@@ -123,7 +135,7 @@ Activate the virtual environment:
 
 FastAPI's interactive API documentation is available at:
 
-`http://127.0.0.1:8000/docs`
+[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
 ## 🧪 Running Automated Tests
 
@@ -131,7 +143,7 @@ Run the complete test suite using:
 
 ```bash
 python -m pytest -v
-````
+```
 
 The tests use mocked API responses to verify backend behavior without depending on real external API requests.
 
@@ -367,7 +379,7 @@ The tests use mocked API responses to verify backend behavior without depending 
 - Serving static assets using FastAPI's `StaticFiles`.
 - Connecting HTML forms to JavaScript event listeners.
 - Preventing default form submission using `event.preventDefault()`.
-- Fetching backend API data using JavaScript `fetch()`.
+- Fetching backend API data using JavaScript `fetch`.
 - Handling JSON responses and HTTP errors.
 - Updating webpage content dynamically using the DOM.
 - Rendering forecast data using `forEach()` and dynamically created elements.
@@ -675,7 +687,9 @@ The tests use mocked API responses to verify backend behavior without depending 
 - Dashboard layout works on desktop and mobile screens.
 - Application startup is automated using `run.bat`.
 
-### Day 22 — November 5, 2026 | Backend Debugging Cleanup and Error Handling\*\*
+---
+
+### Day 22 — November 5, 2026 | Backend Debugging Cleanup and Error Handling
 
 **Concepts Learned:**
 
@@ -699,3 +713,26 @@ The tests use mocked API responses to verify backend behavior without depending 
 - Restored clean API request handling without changing the existing retry and error-handling behavior.
 
 ---
+
+### Day 23 — November 6, 2026 | Endpoint Error Handling and Automated Testing
+
+**Concepts Learned:**
+
+- Testing invalid JSON responses at the API endpoint level.
+- Understanding the difference between helper-function tests and endpoint tests.
+- Using FastAPI's TestClient to verify HTTP error responses.
+- Isolating external API requests using mocked responses.
+
+**Work Completed:**
+
+- Added an automated test for invalid JSON returned by the geocoding API.
+- Added an automated test for invalid JSON returned by the forecast API.
+- Verified that both endpoints return controlled HTTP 502 errors.
+- Ran the complete automated test suite.
+- Confirmed that all 29 automated tests passed.
+
+**Result:**
+
+- All 29 automated tests passed.
+- Verified invalid JSON handling at both the geocoding and forecast endpoint levels.
+- Strengthened backend error-handling test coverage.

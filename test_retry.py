@@ -421,6 +421,46 @@ def test_invalid_json_response():
     assert mock_get.call_count == 1
 
 
+def test_weather_endpoint_handles_invalid_json_from_geocoding():
+    request = httpx.Request("GET", "https://example.com")
+
+    invalid_response = httpx.Response(
+        200,
+        text="This is not valid JSON",
+        request=request,
+    )
+
+    with patch("main.httpx.get", return_value=invalid_response):
+        response = client.get("/weather", params={"city": "London"})
+
+    assert response.status_code == 502
+
+
+def test_forecast_endpoint_handles_invalid_json():
+    request = httpx.Request("GET", "https://example.com")
+
+    invalid_response = httpx.Response(
+        200,
+        text="This is not valid JSON",
+        request=request,
+    )
+
+    location = {
+        "latitude": 51.5,
+        "longitude": -0.1,
+        "name": "London",
+        "country": "United Kingdom",
+    }
+
+    with patch("main.get_city_location", return_value=location), patch(
+        "main.httpx.get",
+        return_value=invalid_response,
+    ):
+        response = client.get("/forecast", params={"city": "London"})
+
+    assert response.status_code == 502
+
+
 def test_weather_endpoint_returns_valid_data():
     location = {
         "latitude": 51.5,
