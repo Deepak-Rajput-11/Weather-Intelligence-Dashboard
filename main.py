@@ -79,10 +79,6 @@ def fetch_api_data(url: str, params: dict) -> dict:
                 )
 
         except httpx.HTTPStatusError as error:
-            print(
-                f"Open-Meteo error: status={error.response.status_code}, url={error.request.url}, response={error.response.text[:500]}"
-            )
-
             if error.response.status_code < 500:
                 raise HTTPException(
                     status_code=502,
