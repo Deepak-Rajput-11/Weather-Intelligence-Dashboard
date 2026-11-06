@@ -59,10 +59,10 @@ function renderTemperatureChart(forecast) {
     });
 
     const highHeight =
-      ((day.max_temperature - minTemperature) / temperatureRange) * 120 + 20;
+      ((day.max_temperature - minTemperature) / temperatureRange) * 45 + 10;
 
     const lowHeight =
-      ((day.min_temperature - minTemperature) / temperatureRange) * 120 + 20;
+      ((day.min_temperature - minTemperature) / temperatureRange) * 45 + 10;
 
     const highLabel = document.createElement("p");
     highLabel.textContent = `${day.max_temperature}°C`;
