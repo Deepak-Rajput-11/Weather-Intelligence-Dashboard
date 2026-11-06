@@ -69,9 +69,13 @@ The project focuses on Python backend development, REST APIs, external API integ
 - Tested weather, forecast, and health endpoints.
 - Added endpoint-level tests for invalid JSON responses from the geocoding and forecast APIs.
 
-### Planned Features
+## 🚀 Deployment
 
-- Deploy the application.
+The application is deployed on Render.
+
+**Live Dashboard:** [Weather Intelligence Dashboard](https://weather-intelligence-dashboard-uk0e.onrender.com)
+
+**Deployment Note:** The deployed application depends on Open-Meteo's API availability. The Render backend has previously encountered Open-Meteo's daily request limit (HTTP 429), which can temporarily prevent live weather searches and forecasts from working.
 
 ## ⚙️ Installation and Setup
 
@@ -122,7 +126,17 @@ python -m fastapi dev main.py
 
 Open the dashboard in your browser:
 
-[http://127.0.0.1:8000](http://127.0.0.1:8000)
+http://127.0.0.1:8000
+
+## 📸 Screenshots
+
+### Dashboard Overview
+
+![Weather Dashboard Overview](screenshots/dashboard-overview.png)
+
+### Empty Dashboard
+
+![Empty Dashboard](screenshots/empty-dashboard.png)
 
 ## 🔗 API Endpoints
 
@@ -146,6 +160,8 @@ python -m pytest -v
 ```
 
 The tests use mocked API responses to verify backend behavior without depending on real external API requests.
+
+**Latest verified result:** 29 tests passed.
 
 ## 📅 Development Log
 
@@ -376,7 +392,7 @@ The tests use mocked API responses to verify backend behavior without depending 
 **Concepts Learned:**
 
 - Serving HTML files using FastAPI's `FileResponse`.
-- Serving static assets using FastAPI's `StaticFiles`.
+- Serving static assets using `StaticFiles`.
 - Connecting HTML forms to JavaScript event listeners.
 - Preventing default form submission using `event.preventDefault()`.
 - Fetching backend API data using JavaScript `fetch`.
@@ -736,3 +752,35 @@ The tests use mocked API responses to verify backend behavior without depending 
 - All 29 automated tests passed.
 - Verified invalid JSON handling at both the geocoding and forecast endpoint levels.
 - Strengthened backend error-handling test coverage.
+
+---
+
+### Day 24 — November 7, 2026 | Project Documentation and Finalization
+
+**Concepts Learned:**
+
+- Organizing project documentation using Markdown.
+- Documenting project features, technologies, installation steps, and API endpoints.
+- Understanding the importance of screenshots in project documentation.
+- Managing temporary files using `.gitignore`.
+
+**Work Completed:**
+
+- Updated and organized the project README.
+- Documented project features, technologies, setup instructions, and API endpoints.
+- Added dashboard screenshots showing the initial interface and weather results.
+- Documented the deployment limitation related to Open-Meteo's API request limit.
+- Added temporary API experiment files to `.gitignore`.
+- Recorded the latest automated test result.
+
+**Result:**
+
+- Project documentation completed.
+- All 29 automated tests passed.
+- Project ready for final GitHub update.
+
+---
+
+## 📌 Project Status
+
+✅ Completed — November 2026

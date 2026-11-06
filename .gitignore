@@ -10,3 +10,8 @@ __pycache__/
 
 # Temporary files
 tempCodeRunnerFile.py
+
+# Temporary API experiment files
+forecast_test.py
+geocoding_test.py
+weather_test.py
